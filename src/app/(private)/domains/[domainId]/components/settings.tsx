@@ -76,12 +76,12 @@ const SettingsNav = ({href}: {href: string}) => {
                 text="API Key"
                 active={sec === "api"}
             />
-            <NavItem 
+            {/* <NavItem 
                 icon={<LayoutPanelTop size={18}/>}
                 href={`${href}&sec=templates`}
                 text="Templates"
                 active={sec === "template"}
-            />
+            /> */}
             <NavItem 
                 icon={<Layers size={18}/>}
                 href={`${href}&sec=more`}
