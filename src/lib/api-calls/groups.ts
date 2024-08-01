@@ -1,7 +1,7 @@
 import {getDoc, postDoc, patchDoc, deleteDoc} from "@/utils/api-wrappers";
 
-export const getGroups = async (domain: string, page?: string) => {
-    let res = await getDoc(`/groups/${domain}?page=${page || 0}`, true);
+export const getGroups = async (domain: string, page?: string, q?: string) => {
+    let res = await getDoc(`/groups/${domain}?page=${page || 0}${q ? `&q=${q}`: ""}`, true);
     return res?.data || false; 
 }
 

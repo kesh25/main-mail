@@ -37,6 +37,7 @@ const handleSubmit = async (
     
             if (screen === 'login') {
                 res = await login(data); 
+                 
                 if (res) {
                     signIn({
                         token: res.token, 
@@ -46,8 +47,10 @@ const handleSubmit = async (
                         // refreshToken: res.session, 
                         // refreshTokenExpireIn: 60 * 60 * 1000,
                     }); 
-                    createToast("success", "Login successful");
-                    push("/dashboard")
+                    createToast("success", "Success, redirecting...!");
+                    setTimeout(() => {
+                        push("/dashboard")
+                    }, 1000)
                      
                 }
             } else if (screen === 'reset') {

@@ -1,5 +1,6 @@
 // storage graph 
 "use client"
+import React from "react"; 
 import { SquareArrowOutUpRight, TrendingUp } from "lucide-react"; 
 
 import AppLinkButton from "@/components/common/app-link-button"; 
@@ -9,20 +10,26 @@ import {
     ChartConfig,
 } from "@/components/ui/chart";
 
+import { getBusinessStorage } from "@/lib/api-calls/storage";
+import { useCustomEffect } from "@/hooks"; 
 interface DomainStorageProps {
-    data: {
-        title: string;
-        storage: number; 
-        fill: string; 
-    }[];
-    domain?: string; 
+    domain: string; 
     title: string; 
     settings?: boolean; 
 };
 
+type DataType = {
+    title: string;
+    storage: number; 
+    fill: string; 
+}
 const DomainStorage: React.FC<DomainStorageProps> =({
-    data, domain, title, settings
+    domain, title, settings
 }) => {
+    const [mounted, setMounted] = React.useState<boolean>(false); 
+    const [data, setData] = React.useState<DataType[]>([]); 
+    const [total, setTotal] = React.useState<number>(0); 
+    const [loading, setLoading] = React.useState<boolean>(false); 
 
     const chartConfig = {
         visitors: {
@@ -36,12 +43,45 @@ const DomainStorage: React.FC<DomainStorageProps> =({
             label: "Free",
             color: "hsl(var(--chart-2))"
         }
-    } satisfies ChartConfig
+    } satisfies ChartConfig;
+
+    React.useEffect(() => setMounted(true), []);
+
+    const fetchStorage = async () => {
+        if (!mounted) return; 
+
+        setLoading(true); 
+
+        let res = await getBusinessStorage(domain); 
+
+        if (res) {
+            let {storage, addedStorage, used} = res; 
+
+            let chartData: DataType[] = [
+                {
+                    title: "Used",
+                    storage: used, 
+                    fill: "#E76F4F"
+                },
+                {
+                    title: "Free",
+                    storage: (storage + addedStorage) - used,
+                    fill: "#2B9C90"
+                }
+            ]; 
+
+            setTotal(storage + addedStorage); 
+            setData(chartData); 
+        };
+
+        setLoading(false); 
+    }
+    useCustomEffect(fetchStorage, [mounted]); 
 
     return (
         <Chart 
             labels={"Total Storage"}
-            labelString="500 GB"
+            labelString={`${total} GB`}
             data={data}
             chartConfig={chartConfig}
             title="Domain Storage"

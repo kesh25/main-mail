@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Paragraph } from "@/components/ui/typography";
 import GroupTable from "@/components/data-tables/groups"; 
 import AddGroupModal from "@/components/modals/add-group";
+import GroupSearch from "./group-search"; 
 
 import Info from "./message"; 
 import SettingsContainer from "./settings-container"; 
@@ -22,6 +23,8 @@ interface GroupsProps {
 
 
 const Groups: React.FC<GroupsProps> = ({domain}) => {
+    const [mounted, setMounted] = React.useState<boolean>(false); 
+
     const [groups, setGroups] = React.useState<GroupTableType[]>([]);
     const [count, setCount] = React.useState<number>(0); 
 
@@ -34,13 +37,16 @@ const Groups: React.FC<GroupsProps> = ({domain}) => {
     const searchParams = useSearch(); 
     const page = searchParams?.get("page") || ""; 
     const d = searchParams?.get("d"); 
+    const q = searchParams?.get("q") || ""; 
 
- 
+    React.useEffect(() => setMounted(true), [])
+    
 
     const fetchGroups = async () => {
+        if (!mounted) return; 
         setLoading(true); 
 
-        let res = await getGroups(domain, page);
+        let res = await getGroups(domain, page, q);
         
         if (res) {
             setGroups(res.docs);
@@ -50,7 +56,7 @@ const Groups: React.FC<GroupsProps> = ({domain}) => {
         setLoading(false); 
     }; 
 
-    useCustomEffect(fetchGroups, [page]);
+    useCustomEffect(fetchGroups, [mounted, page, q]);
 
    
 
@@ -60,13 +66,7 @@ const Groups: React.FC<GroupsProps> = ({domain}) => {
             subtitle={`Total: ${loading ? "...": count + " group" + (count === 1 ? "": "s")}`}
             headerComponent={
                 <div className="flex gap-2">
-                        <AppInput 
-                            value={search}
-                            setValue={setSearch}
-                            placeholder={"Search for group..."}
-                            containerClassName="rounded-full"
-                            cls="w-[250px]"
-                        />
+                        <GroupSearch />
                         <Button 
                             className=" rounded-full" size="sm"
                             onClick={() => setOpenAddModal(true)}

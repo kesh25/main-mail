@@ -31,7 +31,7 @@ const UsersContainer = ({domain}: {domain: string}) => {
 
     useCustomEffect(() => {
         if (!mounted) return; 
-        
+        setUsers([]); 
         fetchUsers(
             setUsers, setCount, setLoading, page, 40, domain, q
         )
@@ -66,24 +66,16 @@ const UsersContainer = ({domain}: {domain: string}) => {
                             <UsersSheet 
                                 domain={domain}
                                 fn={() => fetchUsers(
-                                    setUsers, setCount, setLoading, page, 40, domain
+                                    setUsers, setCount, setLoading, page, 40, domain, q
                                 )}
                             />
                          
                         <UserSearch />
-                        {/* <Button 
-                            size="sm" 
-                            className="gap-2 items-center rounded-full"
-                            onClick={() => setOpenAddUserModal(true)}
-                            variant="secondary"
-                        >
-                            <Search size={18}/>
-                        </Button> */}
                     </div>
                 }
             >
                 <UsersItems 
-                    limit={10} 
+                    limit={40} 
                     users={users} 
                     setUsers={setUsers} 
                     loading={loading} 

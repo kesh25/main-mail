@@ -5,7 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation"; 
 
 import { Bot, CheckCheck, Database, Group, Layers, LayoutPanelTop } from "lucide-react";
-
+ 
 import TabContainer from "./tab-container"; 
 import { Paragraph } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator"; 
@@ -28,7 +28,7 @@ const SettingsContainer = ({domain}: {domain: string}) => {
         <TabContainer
             title="Settings"
         >
-            <div className="flex gap-2 h-full">
+            <div className="flex gap-2 h-full pb-[5rem]">
                 <SettingsNav href={`/domains/${domain}?d=${d}&tab=settings`}/>
                 <div className="flex-1 overflow-hidden overflow-y-auto">
                     {sec === "groups" && <Groups domain={domain}/>}

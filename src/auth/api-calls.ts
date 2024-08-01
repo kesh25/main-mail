@@ -2,10 +2,10 @@ import {getDoc, postDoc, patchDoc} from '@/utils/api-wrappers';
 
 export const login = async (data: {email: string, password: string}) => {
     const res = await postDoc (`/auth/login?type=panel`, data, true);
-
+     
     if (res?.status === "success") {
-      let {user, token} = res; 
-      return {user, token}; 
+      let {data, token} = res; 
+      return {user: data, token}; 
     }  
     return null; 
 };

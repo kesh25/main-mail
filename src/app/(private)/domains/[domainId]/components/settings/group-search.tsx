@@ -3,7 +3,7 @@
 import React from "react"; 
 import { useRouter, usePathname } from "next/navigation"; 
 
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 
 import AppInput from "@/components/common/app-input";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,7 @@ import { useSearch } from "@/hooks";
 import { cn } from "@/lib/utils";
 
 
-const UserSearch = ({}) => {
-
+const GroupSearch = ({}) => {
     const searchParams = useSearch(); 
     const {push} = useRouter(); 
     const pathname = usePathname(); 
@@ -21,19 +20,17 @@ const UserSearch = ({}) => {
     const q = searchParams?.get("q") || ""; 
     const [search, setSearch] = React.useState<string>(""); 
 
-    const [openInput, setOpenInput] = React.useState<boolean>(false); 
-
     const entries: any = searchParams?.entries(); 
 
     React.useEffect(() => {
         if (q && !search) {
             setSearch(q);
-            setOpenInput(true)
         }
     }, [q])
 
     const handleKeyDown = (val: string) => {
-         
+        
+        
         let queryStr = '?'; 
 
         // get current query params
@@ -43,7 +40,7 @@ const UserSearch = ({}) => {
 
         // append the search values
         setSearch(val); 
-        if (val.length > 1) queryStr = queryStr + `q=${val}`; 
+        if (val)  queryStr = queryStr + `q=${val}`; 
         push(`${pathname}${queryStr}`); 
     }
 
@@ -57,43 +54,43 @@ const UserSearch = ({}) => {
         }
 
         push(`${pathname}${queryStr}`); 
-        setOpenInput(false)
+        setSearch(""); 
     }
 
     return (
-        <>
+         
             <AppInput 
                 value={search}
                 setValue={setSearch}
-                placeholder={"Search user..."}
+                placeholder={"Search group..."}
                 onKeyDown={(val: string) => handleKeyDown(val)}
-                containerClassName={cn(openInput ? "flex": "hidden", "duration-700 rounded-full")}
-                cls="min-w-[250px]"
+                containerClassName={cn("rounded-full")}
+                cls="w-[250px]"
                 button={
-                       
-                    <Button 
-                        size="sm" 
-                        className={cn("rounded-full")}
-                        onClick={handleClearQueries}
-                        // variant="secondary"
-                    >
-                        <X size={18}/>
-                    </Button>
+                    <>
+                        {
+                            search && (
+                                <>
+                                    <Button 
+                                        size="sm" 
+                                        className={cn("rounded-full")}
+                                        onClick={handleClearQueries}
+                                        // variant="secondary"
+                                    >
+                                        <X size={18}/>
+                                    </Button>
+                                </>
+                            )
+                        }
+                    </>
                            
                 }
             />
-            <Button 
-                size="sm" 
-                className={cn(!openInput ? "flex": "hidden", "duration-700 rounded-full")}
-                onClick={() => setOpenInput(true)}
-                variant="secondary"
-            >
-                <Search size={18}/>
-            </Button>
-        </>
+             
+        
     )
 
 };
 
 
-export default UserSearch; 
+export default GroupSearch; 
