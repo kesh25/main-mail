@@ -9,8 +9,8 @@ import { numberWithCommas } from "@/utils/format-numbers";
 
 export type DomainTableType = {
     id: string; 
-    // title: string; 
     domain: string; 
+    sending_domain: string; 
     plan: "individual" | "premium" | "startup" | "custom",
     users: number;
     sent: number; 
@@ -28,6 +28,13 @@ export const columns: ColumnDef<DomainTableType>[] = [
         header: "Domain",
         cell: ({ row }) => (
             <span className="text-sm block max-w-[100px]">www.{row.getValue("domain")}</span>
+        )
+    },
+    {
+        accessorKey: "sending_domain",
+        header: "Sending subdomain",
+        cell: ({ row }) => (
+            <span className="text-sm block max-w-[100px]">{row.getValue("sending_domain") || `mail.${row.getValue("domain")}`}</span>
         )
     },
     {

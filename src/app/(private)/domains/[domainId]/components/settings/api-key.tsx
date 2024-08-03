@@ -5,7 +5,7 @@ import React from "react";
 import SettingsContainer from "./settings-container"; 
 import APITable from "@/components/data-tables/api-keys";
 import { Button } from "@/components/ui/button";
-import { Heading3, Paragraph } from "@/components/ui/typography";
+import { Paragraph } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 
 import {APIKeyTableType} from "@/components/data-tables/api-keys/columns";
@@ -65,7 +65,6 @@ const API = ({domain}: {domain: string}) => {
             title="API"
             subtitle="Automate your transactional and marketing emails with a few lines of code."
         >
-            <Heading3 className="text-sm lg:text-md">API Keys</Heading3>
             <Paragraph className=""><span className="text-extrabold">NB:</span> Make certain that you protect your API Keys with your life. They are encrypted before they are stored in our database.</Paragraph>
             <Separator className="my-3"/>
             <div className="flex justify-end my-2">

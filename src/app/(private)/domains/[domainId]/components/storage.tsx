@@ -1,10 +1,9 @@
 // storage graph 
 "use client"
 import React from "react"; 
-import { SquareArrowOutUpRight, TrendingUp } from "lucide-react"; 
+import { SquareArrowOutUpRight } from "lucide-react"; 
 
 import AppLinkButton from "@/components/common/app-link-button"; 
-import { Button } from "@/components/ui/button"; 
 import Chart from "@/components/charts";
 import {
     ChartConfig,
@@ -93,15 +92,14 @@ const DomainStorage: React.FC<DomainStorageProps> =({
                     {
                         !settings && domain && (
                             <div className="flex gap-2">
-                                <Button size="sm" className="gap-2 items-center" variant="secondary">
-                                    Upgrade <TrendingUp size={17}/>
-                                </Button>
+                                 
                                 <AppLinkButton
                                     size="sm"
-                                    type="default"
-                                    href={`/domains/${domain}?d=${title}&tab=settings&sec=storage`}
+                                    type="secondary"
+                                    href={`/domains/${domain}?d=${title}&tab=settings&sec=storage#upgrade`}
+                                    className="gap-2"
                                 >
-                                    <SquareArrowOutUpRight size={18}/>
+                                    Upgrade <SquareArrowOutUpRight size={15}/>
                                 </AppLinkButton>
                             </div>
                         )

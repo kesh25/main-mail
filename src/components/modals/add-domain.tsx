@@ -52,11 +52,26 @@ const AddDomainModal: React.FC<AddDomainModalProps> = ({
             return; 
         }
 
+        // validate sending domain 
+        let sendingArr = sendingDomain.split("."); 
+        let sending_domain_check = sendingArr.length > 1 ? `${sendingArr[1]}${sendingArr[2]}`: null; 
+
+        if (!sending_domain_check) {
+            createToast("error", "Invalid sending domain.");
+            return; 
+        };
+
+        if (sending_domain_check.toLowerCase() !== domain.toLowerCase()) {
+            createToast("error", "The sending domain does not match the main domain!");
+            return; 
+        }
+        
+
         setLoading(true); 
 
         let doc = {
-            domain, 
-            sending_domain: sendingDomain, 
+            domain: domain.toLowerCase(), 
+            sending_domain: sendingDomain.toLowerCase(), 
             plan, 
         }; 
 

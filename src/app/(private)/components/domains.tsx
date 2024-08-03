@@ -5,51 +5,54 @@ import Link from "next/link";
 
 import { ChevronRight, Plus } from "lucide-react"
 
-import AppInput from "@/components/common/app-input";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Heading3 } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils";
 import DomainTable from "@/components/data-tables/domains";
+import AddDomainModal from "@/components/modals/add-domain";
+import DomainSearch from "./domain-search"; 
+
 import { DomainTableType } from "@/components/data-tables/domains/columns";
 import { getDomains } from "@/lib/api-calls/domains";
 import { useCustomEffect, useSearch } from "@/hooks";
-import { Heading3 } from "@/components/ui/typography";
-import AddDomainModal from "@/components/modals/add-domain";
+import { cn } from "@/lib/utils";
 
 
 interface DomainsProps {
     limit: number; 
     search: boolean; 
-    
 }
 
 const Domains: React.FC<DomainsProps> = ({limit, search}) => {
-    const [searchItem, setSearchItem] = React.useState<string>("");
-
     const [domains, setDomains] = React.useState<DomainTableType[]>([]);
     const [count, setCount] = React.useState<number>(0); 
 
+    const [mounted, setMounted] = React.useState<boolean>(false); 
     const [loading, setLoading] = React.useState<boolean>(true); 
     const [openAddDomainModal, setOpenAddDomainModal] = React.useState<boolean>(false); 
 
     const searchParams = useSearch(); 
     const page = searchParams?.get("page") || ""; 
+    const q = searchParams?.get("q") || ""; 
+
+    React.useEffect(() => setMounted(true), [])
 
     const fetchDomains = async () => {
+        if (!mounted) return; 
         setLoading(true); 
 
-        let res = await getDomains(page, limit);
+        let res = await getDomains(page, limit, q);
 
         if (res) {
-             console.log(res.docs)
+              
             setCount(res.count);
             setDomains(res.docs);
         }
         setLoading(false); 
     }
 
-    useCustomEffect(fetchDomains, [page])
+    useCustomEffect(fetchDomains, [mounted, page, q])
     return (
         <>
             <AddDomainModal 
@@ -64,30 +67,21 @@ const Domains: React.FC<DomainsProps> = ({limit, search}) => {
                         <CardTitle className="text-md lg:text-lg font-bold">Domain List</CardTitle>
                         <CardDescription className="text-xs lg:text-sm">Total: {loading ? "....": `${count} domain${count === 1 ? "": "s"}`}</CardDescription>
                     </div>
-
-                    {
-                        !loading && (
-                            <div className="flex gap-2 items-center">
-                                {
-                                    search && (
-                                        <AppInput 
-                                            value={searchItem}
-                                            setValue={setSearchItem}
-                                            placeholder={"Search domain"}
-                                            cls="w-[250px]"
-                                            containerClassName="rounded-full"
-                                        />
-                                    )
-                                }
-                                <Button 
-                                    onClick={() => setOpenAddDomainModal(true)}
-                                    className="gap-2 items-center rounded-full" size="sm">
-                                    {!search && <span>Add Domain</span>}
-                                    <Plus size={18}/>
-                                </Button>      
-                            </div>
-                        )
-                    }
+                        <div className="flex gap-2 items-center">
+                            {
+                                search && (
+                                    <DomainSearch />
+                                )
+                            }
+                            <Button 
+                                disabled={loading}
+                                onClick={() => setOpenAddDomainModal(true)}
+                                className="gap-2 items-center rounded-full" size="sm">
+                                {!search && <span>Add Domain</span>}
+                                <Plus size={18}/>
+                            </Button>      
+                        </div>
+                    
                 </CardHeader>
                 <div className="px-6">
                     <Separator className="my-2"/>

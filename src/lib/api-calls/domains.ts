@@ -2,8 +2,8 @@ import {getDoc, deleteDoc, patchDoc, postDoc} from "@/utils/api-wrappers";
 
 
 // get user domains/business
-export const getDomains = async (page?: string, limit?: number) => {
-    let res = await getDoc(`/business?page=${page || 0}&limit=${limit || 30}`, true); 
+export const getDomains = async (page?: string, limit?: number, q?: string) => {
+    let res = await getDoc(`/business?page=${page || 0}&limit=${limit || 30}${q ? `&q=${q}`: ""}`, true); 
     return res?.data || false; 
 }; 
 
