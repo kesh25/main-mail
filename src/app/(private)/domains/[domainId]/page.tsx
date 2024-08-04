@@ -18,7 +18,7 @@ const Domain = ({params, searchParams}: {params: {domainId: string}, searchParam
         >   
             <Navs tab={searchParams.tab || "home"}/>
             <Info domainId={params.domainId}/>
-            <ChartContainer />
+            <ChartContainer domainId={params.domainId}/>
             <Users domainId={params.domainId}/>
             <>
                 {searchParams.tab === "users" && params.domainId && <UsersContainer domain={params.domainId}/>}

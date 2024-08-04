@@ -7,6 +7,12 @@ export const getDomains = async (page?: string, limit?: number, q?: string) => {
     return res?.data || false; 
 }; 
 
+// count business
+export const getBusinessCount = async () => {
+    let res = await getDoc(`/business/list/count`, true);
+    return res?.data?.count || false; 
+}
+
 // get domain/business
 export const getDomain = async (domainId: string) => {
     let res = await getDoc(`/business/${domainId}`, true); 
@@ -51,3 +57,54 @@ export const addUserToDomain = async (domainId: string, data: any, group?: boole
 
 // update user in domain 
 // export const updateDomainUser = async (domainId: string, )
+
+
+// get dashboard graphs
+export type TimelineType = "90d" | "30d" | "7d" | "365d"; 
+
+export const getDashboardGraphs = async (timeline: TimelineType) => {
+    let res = await getDoc(`/business/list/graphs/${timeline}`, true);
+    return res?.data || false; 
+};
+
+export const getDomainGraphs = async (domainId: string, timeline: TimelineType) => {
+    let res = await getDoc(`/business/graphs/${domainId}/${timeline}`, true); 
+    return res?.data || false; 
+};
+
+
+// helper functions for graphs 
+export function generateChartConfig(domains: string[]) {
+    // Base colors for the chart
+    const baseColors = [
+      "--chart-1", "--chart-2", "--chart-3", "--chart-4",
+      "--chart-5"
+    ];
+  
+    // Helper function to generate HSL color variables
+    const getColor = (index: number) => `hsl(var(${baseColors[index % baseColors.length]}))`;
+  
+    // Generate the chart configuration object
+    const chartConfig = domains.reduce((config: any, domain, index) => {
+      config[domain] = {
+        label: domain.charAt(0).toUpperCase() + domain.slice(1),
+        color: getColor(index)
+      };
+      return config;
+    }, {});
+  
+    return chartConfig;
+  }
+  
+  // Example usage
+  export function generateRandomColor() {
+    const hue = Math.floor(Math.random() * 360); // Random hue value between 0 and 359
+    const baseSaturation = Math.floor(Math.random() * 21) + 60; // Saturation between 60% and 80%
+    const baseLightness = Math.floor(Math.random() * 21) + 40; // Lightness between 40% and 60%
+  
+    // Generate stroke color and fill color with partial transparency
+    const strokeColor = `hsl(${hue}, ${baseSaturation}%, ${baseLightness}%)`;
+    const fillColor = `hsla(${hue}, ${baseSaturation - 20}%, ${baseLightness + 10}%, 0.2)`; // Alpha set to 0.5 for 50% opacity
+  
+    return { strokeColor, fillColor };
+  }

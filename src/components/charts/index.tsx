@@ -60,6 +60,7 @@ const Chart: React.FC<ChartProps> = ({
                     data={data}
                     chartConfig={chartConfig}
                     height={height}
+                    labels={labels}
                 />
             )}
             {

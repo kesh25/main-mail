@@ -142,6 +142,7 @@ const Upgrade = (
                         <Card 
                             className={cn("min-w-[130px] h-[70px] flex justify-center items-center gap-2 cursor-pointer hover:border-main-color duration-700", selected === item ? "border-main-color": "")}
                             onClick={() => setSelected(item)}
+                            key={index}
                         >
                             <Heading3 className="text-sm lg:text-md capitalize">{item}</Heading3>
                         </Card>
