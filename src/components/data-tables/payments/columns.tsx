@@ -27,9 +27,9 @@ export const columns: ColumnDef<PaymentTableType>[] = [
     },
     {
         accessorKey: "amount",
-        header: () => <div className="max-w-[70px]">Amount</div>,
+        header: () => <div className="">Amount</div>,
         cell: ({ row }) => (
-            <div className="max-w-[70px]">KES: {numberWithCommas(row.getValue("amount"))}</div>
+            <div className="">KES: {numberWithCommas(row.getValue("amount"))}</div>
         )
     },
     {

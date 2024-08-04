@@ -13,6 +13,12 @@ export const getBusinessCount = async () => {
     return res?.data?.count || false; 
 }
 
+// get business details 
+export const getBusinessDetails = async (domainId: string) => {
+    let res = await getDoc(`/business/details/${domainId}`, true);
+    return res?.data || false; 
+}
+
 // get domain/business
 export const getDomain = async (domainId: string) => {
     let res = await getDoc(`/business/${domainId}`, true); 
