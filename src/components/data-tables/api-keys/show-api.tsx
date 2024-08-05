@@ -9,7 +9,7 @@ const ShowAPI = ({api_key, appId}: {api_key: string, appId: string}) => {
     const [show, setShow] = React.useState<boolean>(false); 
 
     return (
-        <span className="flex items-center gap-4 w-[400px] text-xs overflow-auto">
+        <span className="flex items-center gap-4 text-xs overflow-auto">
             <span className="flex flex-col max-w-[90%] overflow-auto">
                 <span className="font-bold">{show ? "Decrypted": "Encrypted"}</span>
                 <span>{api_key.slice(0, 30)}***</span>

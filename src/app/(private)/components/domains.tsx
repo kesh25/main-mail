@@ -13,7 +13,7 @@ import DomainTable from "@/components/data-tables/domains";
 import AddDomainModal from "@/components/modals/add-domain";
 import DomainSearch from "./domain-search"; 
 
-import { DomainTableType } from "@/components/data-tables/domains/columns";
+import { DomainTableType } from "@/types";
 import { getDomains } from "@/lib/api-calls/domains";
 import { useCustomEffect, useSearch } from "@/hooks";
 import { cn } from "@/lib/utils";

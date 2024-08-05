@@ -95,7 +95,7 @@ const More = ({domain}: {domain: string}) => {
             <Separator className="my-3"/>
             <Upgrade 
                 domain={domain}
-                plan={data?.plan || ""}
+                plan={data?.plan || "basic"}
             />
         </SettingsContainer>
     )

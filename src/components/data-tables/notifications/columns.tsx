@@ -1,18 +1,44 @@
 "use client"
-import { ColumnDef } from "@tanstack/react-table"
-import CellAction from "../components/cell-action";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { formatDateToString } from "@/utils/dates"
+import { ColumnDef } from "@tanstack/react-table";
 
-export type NotificationTableType = {
-    id: string; 
-    subject: string; 
-    message: string; 
-    createdAt: string; 
-    status: "read" | "unread";
-};
+import { Checkbox } from "@/components/ui/checkbox"
+import  NotificationCellActions from "./cell-actions"; 
+
+import { formatDateToString } from "@/utils/dates"
+import { cn } from "@/lib/utils";
+import { NotificationTableType } from "@/types";
 
 export const columns: ColumnDef<NotificationTableType>[] = [
+    {
+        accessorKey: "status",
+        header: ({}) => <span className="-mr-[8rem]"/>,
+        cell: ({ row }) => (
+            <span className={cn("block w-2 h-2 rounded-sm -mr-[8rem]", row.getValue("status") === "unread" ? "bg-main-color": "bg-transparent")} />
+        ),
+         
+    }, 
+    {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
     {
         accessorKey: "subject",
         header: () => <div className="max-w-[400px]">Subject</div>,
@@ -38,25 +64,10 @@ export const columns: ColumnDef<NotificationTableType>[] = [
         accessorKey: "actions",
         header: () => <span />,
         cell: ({ row }) => {
-            let notification = row.original; 
+            let notification: NotificationTableType = row.original; 
 
             return (
-                <CellAction
-                    id={notification.id}
-                >   
-                    <DropdownMenuContent align="end">
-                        {
-                            notification.status === "unread" && (
-                                <DropdownMenuItem>
-                                    Mark as read
-                                </DropdownMenuItem>
-                            )
-                        }
-                        <DropdownMenuItem>
-                            Delete
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </CellAction>
+                <NotificationCellActions notification={notification}/>
             )
         }
     }

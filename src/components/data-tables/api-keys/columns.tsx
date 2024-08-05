@@ -1,25 +1,15 @@
 "use client";
+import { Copy } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 
-import { ColumnDef } from "@tanstack/react-table"
-import CellAction from "../components/cell-action";
+import APICellActions from "./cell-actions"; 
+import AppLinkButton from "@/components/common/app-link-button";
 import Badge from "@/components/utils/badge";
+import ShowAPI from "./show-api";
 
 // import { numberWithCommas } from "@/utils/format-numbers";
-import AppLinkButton from "@/components/common/app-link-button";
-import { Copy } from "lucide-react";
-import ShowAPI from "./show-api";
 import { formatDateToString } from "@/utils/dates";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-
-
-export type APIKeyTableType = {
-    id: string; 
-    app_id: string; 
-    key: string; 
-    active: boolean; 
-    createdAt: Date;
-    lastUsed: Date; 
-}; 
+import { APIKeyTableType } from "@/types"; 
 
 export const columns: ColumnDef<APIKeyTableType>[] = [
     {
@@ -78,18 +68,9 @@ export const columns: ColumnDef<APIKeyTableType>[] = [
             let key = row.original; 
 
             return (
-                <CellAction
-                    id={key.id}
-                >
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            Disable
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Delete
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </CellAction>  
+                <APICellActions 
+                    api_key={key}
+                />
             )
         }
     }

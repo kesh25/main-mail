@@ -2,24 +2,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import AppAvatar from "@/components/common/app-avatar"; 
-import CellAction from "../components/cell-action";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import UserCellActions from "./cell-actions";
+
 import { formatDateToString } from "@/utils/dates";
-
-
-export type UserTableType = {
-    id: string; 
-    avatar: string; 
-    name: string; 
-    email: string; 
-    phone: string; 
-    role: string[];
-    storage: number; 
-    sent: number; 
-    received: number; 
-    createdAt: Date | string; 
-    suspended: boolean; 
-}; 
+import { UserTableType } from "@/types";
 
 export const columns: ColumnDef<UserTableType>[] = [
     {
@@ -56,7 +42,7 @@ export const columns: ColumnDef<UserTableType>[] = [
                 <div className="flex flex-wrap max-w-[250px]">
                     {
                         roles.map((role: string, index: number) => (
-                            <span key={index} className="border px-2 rounded-sm capitalize w-fit">{role}</span>
+                            <span key={index} className="border px-3 rounded-full capitalize w-fit text-xs">{role}</span>
                         ))
                     }
                 </div>
@@ -86,27 +72,10 @@ export const columns: ColumnDef<UserTableType>[] = [
         accessorKey: "actions", 
         header: () => <span />,
         cell: ({ row }) => {
-            let user = row.original; 
+            let user: UserTableType = row.original; 
 
             return (
-                <CellAction
-                    id={user.id}
-                >
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            Reset Password
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Edit Roles
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            {user.suspended ? "Suspend": "Unsuspend"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Delete
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </CellAction>
+                <UserCellActions user={user}/>
             )
         }
     }

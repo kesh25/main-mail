@@ -1,23 +1,14 @@
 "use client";
+import { Users } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table"
-import CellAction from "../components/cell-action";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-import { formatDateToString } from "@/utils/dates";
-import { numberWithCommas } from "@/utils/format-numbers";
-import { Users } from "lucide-react";
 import Badge from "@/components/utils/badge";
+import CellActionsGroup, { ManageUsers } from "./cell-actions";
 
-
-export type GroupTableType = {
-    id: string; 
-    title: string; 
-    email: string; 
-    autoReply: boolean; 
-    users: number; 
-    createdAt: string; 
-}; 
+import { numberWithCommas } from "@/utils/format-numbers";
+import { formatDateToString } from "@/utils/dates";
+import { GroupTableType } from "@/types";
 
 export const columns: ColumnDef<GroupTableType>[] = [
     {
@@ -53,27 +44,22 @@ export const columns: ColumnDef<GroupTableType>[] = [
         )
     },
     {
+        accessorKey: "id",
+        header: '', 
+        cell: ({ row }) => (
+            <ManageUsers groupId={row.getValue("id")}/>
+        )
+    },
+    {
         accessorKey: "actions", 
         header: () => <span />,
         cell: ({ row }) => {
-            let user = row.original; 
+            let group: GroupTableType = row.original; 
 
             return (
-                <CellAction
-                    id={user.id}
-                >
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            Edit Group
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Manage Users
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            Close Group
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </CellAction>
+                <CellActionsGroup 
+                    group={group}
+                />
             )
         }
     }

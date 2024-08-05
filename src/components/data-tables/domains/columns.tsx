@@ -6,21 +6,7 @@ import Badge from "@/components/utils/badge";
 
 import { formatDateToString } from "@/utils/dates";
 import { numberWithCommas } from "@/utils/format-numbers";
-
-export type DomainTableType = {
-    id: string; 
-    domain: string; 
-    sending_domain: string; 
-    plan: "individual" | "premium" | "startup" | "custom",
-    users: number;
-    sent: number; 
-    received: number; 
-    status: "pending" | "active" | "suspended"; 
-    verified: boolean; 
-    createdAt: Date; 
-    storage: number; 
-}; 
-
+import { DomainTableType } from "@/types";
 
 export const columns: ColumnDef<DomainTableType>[] = [
     {

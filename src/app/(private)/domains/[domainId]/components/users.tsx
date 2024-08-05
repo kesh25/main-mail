@@ -8,8 +8,9 @@ import { Card } from "@/components/ui/card";
 import { Heading2, Paragraph } from "@/components/ui/typography"; 
 import { Separator } from "@/components/ui/separator"; 
 import UserTable from "@/components/data-tables/users";
+
+import { UserTableType } from "@/types";
 import { useCustomEffect, useSearch } from "@/hooks";
-import { UserTableType } from "@/components/data-tables/users/columns";
 import {getDomainUsers} from "@/lib/api-calls/domains"
 
 const Users = ({domainId}: {domainId: string}) => {

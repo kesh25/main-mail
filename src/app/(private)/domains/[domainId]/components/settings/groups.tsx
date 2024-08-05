@@ -2,18 +2,15 @@
 import React from "react";
 import { Plus, X } from "lucide-react";
 
-import AppInput from "@/components/common/app-input";
- 
-import { GroupTableType } from "@/components/data-tables/groups/columns";
 import { Button } from "@/components/ui/button";
 import { Paragraph } from "@/components/ui/typography";
 import GroupTable from "@/components/data-tables/groups"; 
 import AddGroupModal from "@/components/modals/add-group";
 import GroupSearch from "./group-search"; 
-
 import Info from "./message"; 
 import SettingsContainer from "./settings-container"; 
 
+import { GroupTableType } from "@/types";
 import { useCustomEffect, useSearch } from "@/hooks";
 import { getGroups } from "@/lib/api-calls/groups";
 

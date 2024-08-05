@@ -1,21 +1,12 @@
 "use client"
-import { ColumnDef } from "@tanstack/react-table"
-import CellAction from "../components/cell-action";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+
+import Badge from "@/components/utils/badge";
+import PaymentCellActions from "./cell-actions";
+
 import { formatDateToString } from "@/utils/dates"
 import { numberWithCommas } from "@/utils/format-numbers";
-import Badge from "@/components/utils/badge";
-
-export type PaymentTableType = {
-    id: string; 
-    amount: number; 
-    createdAt: string; 
-    status: "pending" | "paid" | "disputed"; 
-    service: "subscription" | "API" | "storage"; 
-    paid: string; 
-    mode: "MPESA"; 
-}; 
-
+import { PaymentTableType } from "@/types";
 
 export const columns: ColumnDef<PaymentTableType>[] = [
     {
@@ -52,16 +43,17 @@ export const columns: ColumnDef<PaymentTableType>[] = [
         )}
     },
     {
+        accessorKey: "mode",
+        header: "Mode",
+    },
+    {
         accessorKey: "paid",
         header: () => <div className="max-w-[70px]">Paid</div>,
         cell: ({ row }) => (
             <div className="max-w-[70px]">{row.getValue("paid") ? formatDateToString(row.getValue("paid")): "Not Yet"}</div>
         )
     },
-    {
-        accessorKey: "mode",
-        header: "Mode",
-    },
+   
     
     {
         accessorKey: "actions",
@@ -70,22 +62,9 @@ export const columns: ColumnDef<PaymentTableType>[] = [
             let payment = row.original; 
 
             return (
-                <CellAction
-                    id={payment.id}
-                >   
-                    <DropdownMenuContent align="end">
-                        {
-                            payment.status === "pending" && (
-                                <DropdownMenuItem>
-                                    Mark payment
-                                </DropdownMenuItem>
-                            )
-                        }
-                        <DropdownMenuItem>
-                            Generate Invoice
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </CellAction>
+                <PaymentCellActions 
+                    payment={payment}
+                />
             )
         }
     }

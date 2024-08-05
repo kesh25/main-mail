@@ -1,9 +1,11 @@
 "use client"
+import React from "react"; 
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -18,18 +20,42 @@ import {
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[], 
+  setSelected?: React.Dispatch<any>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setSelected
 }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+  const [rowSelection, setRowSelection] = React.useState({})
+  
+  const table = useReactTable(
+    {
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+      getFilteredRowModel: getFilteredRowModel(),
+      onRowSelectionChange: setRowSelection,
+      state: {
+        rowSelection
+      }
+    }
+  )
+
+  React.useEffect(() => {
+    if (!setSelected) return; 
+    let selectedRows = table.getFilteredSelectedRowModel().rows; 
+
+    if (selectedRows.length > 0) {
+      selectedRows = selectedRows.map(row => (
+        row.original
+      ));
+
+      setSelected(selectedRows); 
+    } else setSelected([])
+  }, [table.getFilteredSelectedRowModel().rows.length]); 
 
   return (
     <div className="">

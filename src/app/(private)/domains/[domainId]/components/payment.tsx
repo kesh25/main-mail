@@ -2,14 +2,15 @@
 "use client"; 
 
 import React from "react"; 
+
 import TabContainer from "./tab-container"; 
 import PaymentTable from "@/components/data-tables/payments";
 import { Heading2, Paragraph } from "@/components/ui/typography";
-import { PaymentTableType } from "@/components/data-tables/payments/columns";
+import { Card } from "@/components/ui/card";
 
+import { PaymentTableType } from "@/types";
 import {getDomainPayments} from "@/lib/api-calls/payment"; 
 import {useSearch, useCustomEffect} from "@/hooks"
-import { Card } from "@/components/ui/card";
 
 const PaymentContainer = ({domain}: {domain: string}) => {
     const [payments, setPayments] = React.useState<PaymentTableType[]>([]);

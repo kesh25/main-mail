@@ -13,25 +13,12 @@ import Chart from "@/components/charts";
 import { Heading2, Heading3, Paragraph } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 import SettingsContainer from "./settings-container"; 
-
-import StorageUserTable from "@/components/data-tables/storage-users";
-import {StorageUserTableType} from "@/components/data-tables/storage-users/columns";
-
 import DomainStorage from "../storage"; 
+import StorageUserTable from "@/components/data-tables/storage-users";
+
+import {StorageUserTableType} from "@/types";
 import {useCustomEffect, useSearch} from "@/hooks";
 import { getBusinessFileDistribution, getBusinessUsersStorage } from "@/lib/api-calls/storage"
-
-// const chartData = [
-//     { type: "Audio", total: 186 },
-//     { type: "Documents", total: 305 },
-//     { type: "PDFs", total: 237 },
-//     { type: "Images", total: 73 },
-//     { type: "Excel", total: 209 },
-//     { type: "CSV", total: 214 },
-//     { type: "Zip", total: 214 },
-//     { type: "Others", total: 39 },
-//     { type: "Folders", total: 1214 },
-//   ];
 
 type DataType = {
     type: string; 
