@@ -7,6 +7,7 @@ import {
     StorageUserTableType, 
     NotificationTableType,
     GroupTableType,
+    GroupUsersTableType,
     DomainTableType, 
     APIKeyTableType
 } from "./data-tables";
@@ -19,6 +20,7 @@ export type {
     StorageUserTableType, 
     NotificationTableType,
     GroupTableType,
+    GroupUsersTableType,
     DomainTableType, 
     APIKeyTableType
 }

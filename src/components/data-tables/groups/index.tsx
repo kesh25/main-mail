@@ -1,5 +1,6 @@
-import { GroupTableType, columns } from "./columns"
+import { columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"; 
+import { GroupTableType } from "@/types";
 
 const GroupTable = ({data}: {data: GroupTableType[]}) => {
 

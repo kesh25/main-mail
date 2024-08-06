@@ -44,10 +44,10 @@ export const columns: ColumnDef<GroupTableType>[] = [
         )
     },
     {
-        accessorKey: "id",
+        accessorKey: "select",
         header: '', 
         cell: ({ row }) => (
-            <ManageUsers groupId={row.getValue("id")}/>
+            <ManageUsers group={row.original}/>
         )
     },
     {

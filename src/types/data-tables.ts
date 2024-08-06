@@ -42,9 +42,17 @@ export type GroupTableType = {
     title: string; 
     email: string; 
     autoReply: boolean; 
+    autoReplyMessage?: string; 
     users: number; 
     createdAt: string; 
 }; 
+
+export type GroupUsersTableType = {
+    id: string;
+    avatar: string; 
+    name: string; 
+    email: string; 
+}
 
 export type DomainTableType = {
     id: string; 

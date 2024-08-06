@@ -13,6 +13,7 @@ import SettingsContainer from "./settings-container";
 import { GroupTableType } from "@/types";
 import { useCustomEffect, useSearch } from "@/hooks";
 import { getGroups } from "@/lib/api-calls/groups";
+import { useGroupState } from "@/stores/groups";
 
 interface GroupsProps {
     domain: string; 
@@ -20,7 +21,7 @@ interface GroupsProps {
 
 
 const Groups: React.FC<GroupsProps> = ({domain}) => {
-    const [mounted, setMounted] = React.useState<boolean>(false); 
+    const [mounted, setMounted] = React.useState<boolean>(false);
 
     const [groups, setGroups] = React.useState<GroupTableType[]>([]);
     const [count, setCount] = React.useState<number>(0); 
@@ -35,6 +36,8 @@ const Groups: React.FC<GroupsProps> = ({domain}) => {
     const page = searchParams?.get("page") || ""; 
     const d = searchParams?.get("d"); 
     const q = searchParams?.get("q") || ""; 
+
+    const { deletedGroups, editedGroups } = useGroupState(); 
 
     React.useEffect(() => setMounted(true), [])
     
@@ -55,7 +58,40 @@ const Groups: React.FC<GroupsProps> = ({domain}) => {
 
     useCustomEffect(fetchGroups, [mounted, page, q]);
 
-   
+    // handling remove group state 
+    React.useEffect(() => {
+        if (deletedGroups.length === 0) return; 
+        setGroups([]);
+        let updated = []; 
+        for (let i = 0; i < groups.length; i++) {
+            let current = groups[i]; 
+
+            // check if group is in deleted
+            let confirm = deletedGroups.filter(grp => grp.id === current.id); 
+
+            if (confirm.length === 0) updated.push(current) 
+        }
+        setGroups(updated)
+    }, [deletedGroups])
+
+    // listen for edited groups
+    React.useEffect(() => {
+        if (editedGroups.length === 0) return; 
+        setGroups([]);
+        let updated = []; 
+        for (let i = 0; i < groups.length; i++) {
+            let current = groups[i]; 
+
+            
+
+            // check if group is in deleted
+            let confirm = editedGroups.filter(grp => grp.id === current.id); 
+
+            if (confirm.length === 0) updated.push(current);
+            else updated.push(confirm[0]);
+        }
+        setGroups(updated)
+    }, [editedGroups]);
 
     return (
         <SettingsContainer

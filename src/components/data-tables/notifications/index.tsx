@@ -1,11 +1,11 @@
-import { NotificationTableType, columns } from "./columns"
+import { columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"; 
+import {NotificationTableType} from "@/types"; 
 
 const NotificationTable = (
   {data, setSelected}: 
   {
     data: NotificationTableType[];
-    
     setSelected: React.Dispatch<any>; 
   }) => {
 

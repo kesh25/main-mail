@@ -6,7 +6,7 @@ import AppCheckbox from "../common/checkbox";
 import AppInput from "../common/app-input"; 
 import {Button} from "../ui/button"; 
 import FormTitle from "../forms/components/form-title";
-import {GroupTableType} from "../data-tables/groups/columns"; 
+import {GroupTableType} from "@/types"; 
 import {Modal} from "./modal";
 
 import { createToast } from "@/utils/toast";
@@ -71,17 +71,15 @@ const AddGroupModal: React.FC<AddGroupModalProps> = ({
             users: 0,   
         }; 
 
-        let res = await createGroup(domain, {
-            ...group, 
-            autoReplyMessage, 
-            
-        }); 
+        if ( autoReplyMessage) group.autoReplyMessage =  autoReplyMessage; 
+
+        let res = await createGroup(domain, group); 
 
         if (res) {
             group.id = res; 
 
             createToast("success", "Group was created successfully!");
-
+            setGroups([]); 
             setGroups([group, ...groups]); 
             setTitle("");
             setEmail("");
