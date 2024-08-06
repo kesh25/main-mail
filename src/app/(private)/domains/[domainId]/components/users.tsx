@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Heading2, Paragraph } from "@/components/ui/typography"; 
 import { Separator } from "@/components/ui/separator"; 
 import UserTable from "@/components/data-tables/users";
+import UserUpdate from "./user-update"; 
 
 import { UserTableType } from "@/types";
 import { useCustomEffect, useSearch } from "@/hooks";
@@ -68,7 +69,7 @@ export const fetchUsers = async (
     setLoading(true);
     setUsers([]); 
 
-    let res = await getDomainUsers(domain, page, limit, q);
+    let res: any = await getDomainUsers(domain, page, limit, q);
     
     if (res) {
         setCount(res.count);
@@ -105,7 +106,9 @@ export const UsersItems = (
         fetchUsers(
             setUsers, setCount, setLoading, page, limit, domain, q
         )
-    }, [mounted, page, q])
+    }, [mounted, page, q]); 
+
+    
 
     return (
         <>
@@ -118,9 +121,17 @@ export const UsersItems = (
             }
             {
                 !loading && (
-                    <UserTable 
-                        data={users}
-                    />
+                    <>
+                        <UserUpdate 
+                            users={users}
+                            count={count}
+                            setUsers={setUsers}
+                            setCount={setCount}
+                        />
+                        <UserTable 
+                            data={users}
+                        />
+                    </>
                 )
             }
         </>

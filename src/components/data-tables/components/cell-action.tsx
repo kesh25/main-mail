@@ -8,7 +8,8 @@ import {
   DropdownMenu,
   DropdownMenuLabel, 
   DropdownMenuTrigger,
-  DropdownMenuContent, DropdownMenuItem
+  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"; 
 
 
@@ -26,6 +27,7 @@ const CellAction = ({id, children, href}: {id: string, children?: React.ReactNod
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             {
               href && (
                 <DropdownMenuItem onClick={() => push(href)} className="cursor-pointer hover:text-main-color">

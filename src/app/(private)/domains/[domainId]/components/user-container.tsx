@@ -2,17 +2,17 @@
 "use client"; 
 
 import React from "react";
-import {Paperclip, Plus, Search} from "lucide-react"; 
+import { Plus } from "lucide-react"; 
 
 import { Button } from "@/components/ui/button"; 
 import TabContainer from "./tab-container"; 
-import { UserTableType } from "@/components/data-tables/users/columns";
 import AddUserModal from "@/components/modals/add-user"; 
 import UsersSheet from "@/components/sheets/add-users"; 
 import UserSearch from "./user-search"; 
+import UserUpdate from "./user-update"; 
 
 import { useCustomEffect, useSearch } from "@/hooks";
-
+import { UserTableType } from "@/types";
 import { fetchUsers, UsersItems } from "./users"; 
 
 const UsersContainer = ({domain}: {domain: string}) => {
@@ -48,6 +48,12 @@ const UsersContainer = ({domain}: {domain: string}) => {
                 count={count}
                 setCount={setCount}
                 
+            />
+            <UserUpdate 
+                users={users}
+                setUsers={setUsers}
+                count={count}
+                setCount={setCount}
             />
             <TabContainer
                 title="Domain Users"

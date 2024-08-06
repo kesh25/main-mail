@@ -64,6 +64,11 @@ export const columns: ColumnDef<UserTableType>[] = [
         cell: ({ row }) => <span className="">{row.getValue("storage")}</span>
     },
     {
+        accessorKey: "suspended",
+        header: "Suspended",
+        cell: ({ row }) => <span>{row.getValue("suspended") ? "Yes": "No"}</span>
+    },
+    {
         accessorKey: "createdAt",
         header: "Added",
         cell: ({ row }) => <span className="">{formatDateToString(row.getValue("createdAt"))}</span>
