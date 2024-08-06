@@ -5,9 +5,12 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import CellAction from "../components/cell-action";
 import Confirm from "@/components/modals/confirm";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 import { APIKeyTableType } from "@/types";
+import { toggleActive, deletingApiKey } from "@/lib/api-calls/keys";
+import { createToast } from "@/utils/toast";
+import { useApiKeyState } from "@/stores/api-keys";
 
 type ModalType = "disable" | "enable" | "delete" | undefined; 
 const APICellActions = ({ api_key }: { api_key: APIKeyTableType }) => {
@@ -66,7 +69,34 @@ const APIModal = (
         type: ModalType
     }
 ) => {
+    const [loading, setLoading] = React.useState<boolean>(false); 
+    const {editApiKey, deleteApiKey} = useApiKeyState();
 
+    const handleToggleActive = async () => {
+        setLoading(true); 
+        let res = await toggleActive(api_key.id, {active: !api_key.active});
+
+        if (res) {
+            createToast("success", "API Key updated!");
+            editApiKey({...api_key, active: !api_key.active});
+            onClose() 
+        };
+
+        setLoading(false);
+    }
+
+    const handleDelete = async () => {
+        setLoading(true); 
+        let res = await deletingApiKey(api_key.id); 
+
+        if (res) {
+            createToast("success", "API Key was deleted!");
+            deleteApiKey(api_key);
+            onClose(); 
+        };
+
+        setLoading(false); 
+    }
     return (
         <Confirm
             isOpen={isOpen}
@@ -87,7 +117,15 @@ const APIModal = (
             }
         >
             <div className="flex justify-end w-full my-2">
-                <Button className="min-w-[150px]">
+                <Button 
+                    className="min-w-[150px]"
+                    variant={
+                        type === "enable" ? 
+                            "default": "destructive"
+                    }   
+                    disabled={loading}
+                    onClick={type === "delete" ? handleDelete: handleToggleActive}
+                >
                     Proceed
                 </Button>
             </div>

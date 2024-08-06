@@ -1,6 +1,7 @@
 "use client";
 import { Copy } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 import APICellActions from "./cell-actions"; 
 import AppLinkButton from "@/components/common/app-link-button";
@@ -10,6 +11,7 @@ import ShowAPI from "./show-api";
 // import { numberWithCommas } from "@/utils/format-numbers";
 import { formatDateToString } from "@/utils/dates";
 import { APIKeyTableType } from "@/types"; 
+import { createToast } from "@/utils/toast"; 
 
 export const columns: ColumnDef<APIKeyTableType>[] = [
     {
@@ -18,12 +20,19 @@ export const columns: ColumnDef<APIKeyTableType>[] = [
         cell: ({ row }) => (
             <span className="flex items-center gap-4 text-xs">
                 {row.getValue("app_id")}
-                <AppLinkButton
-                    size={"sm"}
-                    type="secondary"
+                <CopyToClipboard 
+                    text={row.getValue("app_id")}
+                    onCopy={() => {
+                        createToast("success", "Copied App ID to clipboard")
+                    }}
                 >
-                    <Copy size={18}/>
-                </AppLinkButton>
+                    <AppLinkButton
+                        size={"sm"}
+                        type="secondary"
+                    >
+                        <Copy size={18}/>
+                    </AppLinkButton>
+                </CopyToClipboard>
             </span>
         )
     },
@@ -32,8 +41,7 @@ export const columns: ColumnDef<APIKeyTableType>[] = [
         header: "App Key",
         cell: ({ row }) => (
             <ShowAPI 
-                api_key={row.getValue("key")}
-                appId={row.getValue("app_id")}
+                api_key={row.original}
             />
         )
     },

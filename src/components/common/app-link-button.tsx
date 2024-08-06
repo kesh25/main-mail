@@ -4,14 +4,15 @@ import { cn } from "@/lib/utils";
 
 const AppLinkButton = (
     {
-        children, href, type, className, size,
+        children, href, type, className, size, onClick
     }: 
     {
         children: React.ReactNode, 
         href?: string, 
         type: "default" | "secondary" | "outline" | "ghost",
         size: "default" | "sm" | "lg" | "icon" 
-        className?: string
+        className?: string,
+        onClick?: () => void; 
     }
 ) => {
     let cls = cn("cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -37,7 +38,7 @@ const AppLinkButton = (
                         {children}
                     </Link>
                 ): (
-                    <span className={cls}>
+                    <span className={cls} onClick={onClick ? onClick: () => {}}>
                         {children}
                     </span>
                 )

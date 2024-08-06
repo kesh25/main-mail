@@ -9,14 +9,11 @@ import Badge from "@/components/utils/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import FormTitle from "@/components/forms/components/form-title";
-
 import Info from "./message"; 
 import SettingsContainer from "./settings-container"; 
 
-
-import { cn } from "@/lib/utils"; 
 import { createToast } from "@/utils/toast"; 
-import { getDomainRecords } from "@/lib/api-calls/records";
+import { getDomainRecords, verifyDomain } from "@/lib/api-calls/records";
 import { useCustomEffect, useSearch } from "@/hooks";
 
 type RecordsType = {
@@ -28,26 +25,97 @@ type RecordsType = {
 }
 
 const Verification = ({domain}: {domain: string}) => {
-    const [loading, setLoading] = React.useState<boolean>(true); 
+    const [loading, setLoading] = React.useState<boolean>(false); 
+    const [mounted, setMounted] = React.useState<boolean>(false); 
+
     const [verified, setVerified] = React.useState<boolean>(false); 
     const [records, setRecords] = React.useState<RecordsType>(); 
 
     const searchParams = useSearch(); 
     const d = searchParams?.get("d") || ""; 
 
+    React.useEffect(() => setMounted(true), [])
+
     const fetchRecords = async () => {
+        if (!mounted) return; 
         setLoading(true); 
 
         let res = await getDomainRecords(domain); 
 
         if (res) {
-            setRecords(res)
+            setRecords(res);
+        } else {
+            setRecords(
+                {
+                    SPF: {
+                      is_active: false,
+                      name: 'Domain',
+                      valid: 'invalid',
+                      value: 'Not added'
+                    },
+                    DKIM: {
+                      is_active: false,
+                      name: 'DKIM',
+                      valid: 'invalid',
+                      value: 'Not Added'
+                    },
+                    MX: [
+                      {
+                        is_active: false,
+                        priority: '10',
+                        record_type: 'MX',
+                        valid: 'invalid',
+                        value: 'Not Added'
+                      },
+                      {
+                        is_active: false,
+                        priority: '10',
+                        record_type: 'MX',
+                        valid: 'invalid',
+                        value: 'Not Added'
+                      }
+                    ],
+                    CNAME: {
+                      is_active: false,
+                      name: 'CNAME',
+                      valid: 'valid',
+                      value: 'Not Added'
+                    },
+                    state: 'unverified',
+                    
+                }
+            )
         }; 
 
         setLoading(false); 
     }
 
-    useCustomEffect(fetchRecords, []); 
+    useCustomEffect(fetchRecords, [mounted]); 
+
+    const handleVerification = async () => {
+        if (records?.state === "active") {
+            createToast("error", "Domain is verified!");
+            return; 
+        };
+
+        setLoading(true); 
+
+        let res = await verifyDomain(domain); 
+         
+        if (res){
+            if (res === "unverified") {
+                createToast("error", "Domain is still unverified!")
+            } else if (res === "active") {
+                createToast("success", "Domain has been verified!");
+                let update: any = {
+                    ...records, state: "active"
+                }
+                setRecords(update); 
+            }
+        };
+
+        setLoading(false); 
+    }
 
     return (
         <SettingsContainer
@@ -63,12 +131,16 @@ const Verification = ({domain}: {domain: string}) => {
 
             <div className="flex gap-3 items-center justify-between  w-full">
                 <div className="flex items-center gap-3">
-                    <Badge type={records?.state === "active" ? "primary": "other"} text={loading ? "....": records?.state === "active" ? "Verified": "Not Verified"}/>
+                    <Badge type={records?.state === "active" ? "primary": "other"} text={loading ? "Unverified": records?.state === "active" ? "Verified": "Not Verified"}/>
                 </div>
                 {
                     records?.state  !== "active" && (
-                        <Button className="w-[150px] rounded-full" disabled={loading}>
-                            {loading ? "...":  "Verify"}
+                        <Button 
+                            className="w-[150px] rounded-full" 
+                            disabled={loading}
+                            onClick={handleVerification}
+                        >
+                            Verify
                         </Button>
                     )
                 }
@@ -79,17 +151,13 @@ const Verification = ({domain}: {domain: string}) => {
                 subtitle="TXT records (known as SPF & DKIM) are required to send and receive email through us"
                 hostname={loading ? "..." : records?.SPF.name}
                 value={loading ? "...": records?.SPF.value}
-                // "v=spf1 include:mailgun.org ~all"
             />
             <Separator className="my-3"/>
             <DNSEntry 
                 title="DKIM"
                 subtitle="You can create up to 3 DKIM keys per domain"
                 hostname={loading ? "...": records?.DKIM.name}
-                // "mx._domainkey.mail.policeismybrother.org"
-                // value="k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDqWEJPiFI18jp+"
                 value={loading ? "...": records?.DKIM.value}
-                // "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDqWEJPiFI18jp+x2hGdPYTodRAFqwtu3otuHP7KiRgI3mkhl68f1jBT+fmHRj1787AvE0RUlV4DSfUXuo8Q6foLjo4T4yRxErJYTBueGPPVjh3uhjRRnu9sKC/z5Yd4XZ4irqXAePt1WtX8JQfO869XCZQrYgBHs8wzzcEw9TVNwIDAQAB"
             />
             <Separator className="my-3"/>
             
@@ -97,26 +165,20 @@ const Verification = ({domain}: {domain: string}) => {
                 title="MX"
                 subtitle={`MX records are recommended for all domains, even if you are only sending messages. Unless you already have MX records for @${d} pointing to another email provider (e.g. Gmail), you should update the following records.`}
                 hostname={loading ? "...": d}
-                // "mail.policeismybrother.org"
                 value={loading ? "...": records?.MX[0].value}
                 subtext={`Priority: ${records?.MX[0].priority}`}
-                // "mxa.mailgun.org"
             />
             <DNSEntry 
                 title="MX"
                 hostname={loading ? "...": d}
-                // "mail.policeismybrother.org"
                 value={loading ? "...": records?.MX[1].value}
                 subtext={`Priority: ${records?.MX[0].priority}`}
-
-                // "mxb.mailgun.org"
             />
             <Separator className="my-3"/>
             <DNSEntry 
                 title="CNAME"
                 subtitle="The CNAME record is necessary for tracking opens, clicks, and unsubscribes."
                 hostname={`email.${d}`}
-                // "email.mail.policeismybrother.org"
                 value={loading ? "...": records?.CNAME.value}
             />
             <div className="pb-[5rem]"/>
@@ -129,8 +191,14 @@ export default Verification;
 
 const DNSEntry = ({title, hostname, subtitle, value, subtext}: {title: string, subtitle?: string, hostname: string, value: string, subtext?: string}) => {
 
-    const handleCopy = (titleS: boolean) => {
-        createToast("success", titleS ? "Copied!": `${title} value has been copied!`)
+    const handleCopy = async (titleS: boolean) => {
+        try {
+            await navigator?.clipboard.writeText(titleS ? hostname: value)
+            createToast("success", titleS ? "Copied!": `${title} value has been copied!`)
+        } catch (err) {
+            createToast("error", "Copying was unsuccessful!")
+        }
+     
     }
     return (
         <div className="flex flex-col gap-2 my-3 overflow-hidden">
@@ -154,7 +222,7 @@ const DNSEntry = ({title, hostname, subtitle, value, subtext}: {title: string, s
                     </Button>
                 </div>
                 <Card className="p-3 pr-4 bg-secondary h-fit max-w-[80vw] overflow-auto">
-                    <Paragraph className="w-full">{`${value.toString()}`}</Paragraph>
+                    <Paragraph className="w-full">{`${value?.toString()}`}</Paragraph>
                 </Card>
 
             </div>

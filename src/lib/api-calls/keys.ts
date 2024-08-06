@@ -27,7 +27,7 @@ export const toggleActive = async (keyId: string, data: any) => {
 };
 
 // delete key
-export const deleteApiKey = async (keyId: string) => {
+export const deletingApiKey = async (keyId: string) => {
     let res = await deleteDoc(`/keys/${keyId}`, true);
     return res?.status === "success" || false; 
 }

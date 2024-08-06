@@ -12,5 +12,5 @@ export const getDomainRecords = async (domainId: string) => {
 export const verifyDomain = async (domainId: string) => {
     let res = await getDoc(`/records/verify/${domainId}`, true); 
 
-    return res?.data || false; 
+    return res?.data?.state || false; 
 }
