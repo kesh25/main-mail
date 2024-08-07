@@ -7,11 +7,15 @@ import { Button } from "@/components/ui/button";
 import CellAction from "../components/cell-action";
 import Confirm from "@/components/modals/confirm";
 import FormTitle from "@/components/forms/components/form-title";
-import { DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 
 import { PaymentTableType } from "@/types";
 import { numberWithCommas } from "@/utils/format-numbers";
+import { makePayment, updatePayment } from "@/lib/api-calls/payment";
+import { createToast } from "@/utils/toast";
+import { validatePhone } from "@/utils/validation";
+import { usePaymentState } from "@/stores/payment";
 
 type ModalType = "pay" | "dispute" | "invoice" | undefined; 
 
@@ -43,7 +47,7 @@ const PaymentCellActions = ({ payment }: { payment: PaymentTableType }) => {
                                     setOpenModal(true)
                                 }}
                             >
-                                Mark payment
+                                Make payment
                             </DropdownMenuItem>
                         )
                     }
@@ -77,6 +81,21 @@ const PaymentCellActions = ({ payment }: { payment: PaymentTableType }) => {
                             </>
                         )
                     }
+                    {
+                        payment.status === "disputed" && (
+                            <>
+                                <DropdownMenuItem
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        setType("dispute");
+                                        setOpenModal(true)
+                                    }}
+                                >
+                                    Track
+                                </DropdownMenuItem>
+                            </>
+                        )
+                    }
                 </>
             </CellAction>
         </>
@@ -96,8 +115,42 @@ const PaymentModal = (
     }) => {
     const [loading, setLoading] = React.useState<boolean>(false);
     const [phone, setPhone] = React.useState<string>(""); 
-    const [reason, setReason] = React.useState<string>("")
+    const [reason, setReason] = React.useState<string>(""); 
 
+    const { updatePayments } = usePaymentState()
+
+    const handleInitiatePayment = async () => {
+        if (!phone || !validatePhone(phone)) {
+            createToast("error", "Provide a valid phone number");
+            return; 
+        }
+        setLoading(true); 
+
+        let res = await makePayment(payment.id, {phone}); 
+
+        if (res) {
+            createToast("success", "Payment initiated!");
+            onClose()
+        };
+        setLoading(false); 
+    }; 
+
+    const handleUpdatePayment = async () => {
+        if (!reason) {
+            createToast("error", "Provide a reason for dispute");
+            return;
+        };
+        setLoading(true); 
+
+        let res = await updatePayment(payment.id, {reason}); 
+
+        if (res) {
+            createToast("success", "Dispute submitted");
+            updatePayments(payment); 
+            onClose(); 
+        };
+        setLoading(false)
+    };
 
     return (
         <Confirm
@@ -152,6 +205,13 @@ const PaymentModal = (
                     <Button
                         className="min-w-[200px]"
                         disabled={loading}
+                        onClick={
+                            type === "pay" ? 
+                                handleInitiatePayment:
+                            type === "dispute" ? 
+                                handleUpdatePayment:
+                                () => {}
+                        }
                     >
                         {type === "pay" && "Initiate Payment"}
                         {type === "dispute" && "Submit dispute"}

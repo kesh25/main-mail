@@ -35,9 +35,10 @@ export const columns: ColumnDef<PaymentTableType>[] = [
         header: "Status",
         cell: ({ row }) => {
             let status: any = row.getValue("status")
+            
             return (
             <Badge 
-                type={status === "pending" ? "secondary": status === "paid" ? "primary": "other"}
+                type={status === "pending" ? "secondary": status === "paid" ? "primary": status === "disputed" ? "danger": "other"}
                 text={status}
             />
         )}
