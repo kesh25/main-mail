@@ -72,15 +72,6 @@ const Info = ({domainId}:{domainId: string}) => {
                             <Card className="p-6 lg:flex-1 flex flex-col gap-2">
                                 <div className="flex gap-2 items-center">
                                     <Badge 
-                                        text={domain.status}
-                                        type={
-                                            domain.status === "pending" ? 
-                                            "secondary":
-                                            domain.status === "suspended" ? 
-                                            "danger": "primary"
-                                            }
-                                    />
-                                    <Badge 
                                         text={domain.verified ? "Verified": "Not Verified"}
                                         type={
                                             domain.verified ? "primary": "danger"

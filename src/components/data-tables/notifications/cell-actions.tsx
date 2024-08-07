@@ -9,6 +9,9 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 
 import { NotificationTableType } from "@/types";
+import { useNotificationState } from "@/stores/notifications";
+import { deleteNotification } from "@/lib/api-calls/notifications";
+import { createToast } from "@/utils/toast";
 
 const NotificationCellActions = ({notification}: {notification: NotificationTableType}) => {
     const [openModal, setOpenModal] = React.useState<boolean>(false); 
@@ -18,6 +21,7 @@ const NotificationCellActions = ({notification}: {notification: NotificationTabl
             <DeleteModal 
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
+                notificationId={notification.id}
             />
             <CellAction
                 id={notification.id}
@@ -44,6 +48,23 @@ const DeleteModal = (
 ) => {
     const [loading, setLoading] = React.useState<boolean>(false); 
 
+    const { addToDeletedNotifications } = useNotificationState();
+
+    const handleDelete = async () => {
+        setLoading(true)
+
+        let res = await deleteNotification(notificationId); 
+
+        if (res) {
+            createToast("success", "Notification deleted!"); 
+
+            addToDeletedNotifications(notificationId); 
+            onClose(); 
+        };
+
+        setLoading(false)
+    }
+
     return (
         <Confirm
             isOpen={isOpen}
@@ -55,6 +76,7 @@ const DeleteModal = (
                 <Button 
                     disabled={loading}
                     variant="destructive"
+                    onClick={handleDelete}
                     className="min-w-[150px]"
                 >
                     Proceed
