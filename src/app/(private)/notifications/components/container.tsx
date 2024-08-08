@@ -32,7 +32,7 @@ const Container = () => {
     const searchParams = useSearch(); 
     const page = searchParams?.get("page") || "";
     const unread = searchParams?.get("unread") || ""; 
-    const old = searchParams?.get("old") ? true: false;
+    const old = searchParams?.get("old") === "1" ? true: false;
 
     const { addToDeletedNotifications, addToEditedNotifications } = useNotificationState(); 
 
@@ -51,7 +51,7 @@ const Container = () => {
         setLoading(false); 
     }; 
 
-    useCustomEffect(fetchNotifications, [page, unread, mounted]);
+    useCustomEffect(fetchNotifications, [page, unread, mounted, old]);
 
     const handleDelete = async () => {
         if (selected.length === 0) return; 

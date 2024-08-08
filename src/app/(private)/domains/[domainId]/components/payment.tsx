@@ -2,11 +2,14 @@
 "use client"; 
 
 import React from "react"; 
+import { RefreshCcw } from "lucide-react";
 
-import TabContainer from "./tab-container"; 
-import PaymentTable from "@/components/data-tables/payments";
+import { Button } from "@/components/ui/button";
 import { Heading2, Paragraph } from "@/components/ui/typography";
 import { Card } from "@/components/ui/card";
+import { PaymentModal } from "@/components/data-tables/payments/cell-actions"; 
+import TabContainer from "./tab-container"; 
+import PaymentTable from "@/components/data-tables/payments";
 
 import { PaymentTableType } from "@/types";
 import {getDomainPayments} from "@/lib/api-calls/payment"; 
@@ -18,6 +21,8 @@ const PaymentContainer = ({domain}: {domain: string}) => {
     const [count, setCount] = React.useState<number>(0); 
     const [mounted, setMounted] = React.useState<boolean>(false); 
     const [loading, setLoading] = React.useState<boolean>(true); 
+    const [pending, setPending] = React.useState<number>(0); 
+    const [openPayModal, setOpenPayModal] = React.useState<boolean>(false); 
 
     const searchParams = useSearch(); 
     const page = searchParams?.get("page") || ""; 
@@ -36,7 +41,8 @@ const PaymentContainer = ({domain}: {domain: string}) => {
 
         if (res) {
             setPayments(res.docs);
-            setCount(res.count)
+            setCount(res.count);
+            setPending(res.pending || 0)
         }
         setLoading(false)
     };
@@ -47,7 +53,7 @@ const PaymentContainer = ({domain}: {domain: string}) => {
     React.useEffect(() => {
         if (!mounted || updatedPayments.length === 0) return; 
         
-        let updated = []; 
+        let updated: PaymentTableType[] = []; 
         for (let i = 0; i < payments.length; i++) {
             let curr = payments[i]; 
 
@@ -64,30 +70,71 @@ const PaymentContainer = ({domain}: {domain: string}) => {
         setPayments([]);
         setPayments(updated); 
         
-    }, [updatedPayments])
+    }, [updatedPayments]);
+
     return (
-        <TabContainer
-            title="Payment"
-            subtitle={`Total: ${loading ? "...": `${count} item${count === 1 ? "": "s"}`}`}
-        >
+        <>
             {
-                !loading && st && (
-                    <Card className="p-3 my-2 border-main-color">
-                        <Paragraph className="font-bold text-sm lg:text-md">Congrats on adding your domain to our platform. You need to make the first payment to proceed before sending or receiving any email begins!</Paragraph>
-                    </Card>
+                pending > 0 && (
+                    <PaymentModal 
+                        payment={payments.filter(pay => pay.status === "pending")[0]}
+                        isOpen={openPayModal}
+                        onClose={() => setOpenPayModal(false)}
+                        type="pay"
+                        pending={true}
+                    />
+
                 )
+
             }
-            {
-                loading && (
-                    <div className="w-full h-[40vh] flex justify-center items-center">
-                        <Heading2 className="text-md lg:text-base">Loading....</Heading2>
+            <TabContainer
+                title="Payment"
+                subtitle={`Total: ${loading ? "...": `${count} item${count === 1 ? "": "s"}`}`}
+                headerComponent={
+                    <div className="flex items-center gap-1">
+                        {
+                            pending > 0 ? (
+                                <>
+                                    <Button
+                                        variant={"outline"}
+                                        onClick={() => setOpenPayModal(true)}
+                                    >
+                                        Pay Pending
+                                    </Button>
+                                    
+                                
+                                </>
+                            ): <></>
+                        }
+                        <Button
+                            size="sm"
+                            onClick={fetchPayments}
+                        >
+                            <RefreshCcw size={18}/>
+                        </Button>
                     </div>
-                )
-            }
-            {
-                !loading && <PaymentTable data={payments}/>
-            }
-        </TabContainer>
+                }
+            
+            >
+                {
+                    !loading && st && (
+                        <Card className="p-3 my-2 border-main-color">
+                            <Paragraph className="font-bold text-sm lg:text-md">Congrats on adding your domain to our platform. You need to make the first payment to proceed before sending or receiving any email begins!</Paragraph>
+                        </Card>
+                    )
+                }
+                {
+                    loading && (
+                        <div className="w-full h-[40vh] flex justify-center items-center">
+                            <Heading2 className="text-md lg:text-base">Loading....</Heading2>
+                        </div>
+                    )
+                }
+                {
+                    !loading && <PaymentTable data={payments}/>
+                }
+            </TabContainer>
+        </>
     )
 };
 

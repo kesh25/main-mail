@@ -6,6 +6,13 @@ export type PaymentTableType = {
     service: "subscription" | "API" | "storage"; 
     paid: string; 
     mode: "MPESA"; 
+    reason?: string;
+    resolution?: string; 
+    metadata?: {
+        transactionDate: Date; 
+        phone: string; 
+        transactionID: string; 
+    }
 }; 
 
 export type UserTableType = {

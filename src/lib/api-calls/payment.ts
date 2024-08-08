@@ -6,6 +6,10 @@ export const makePayment = async (paymentId: string, data: any) => {
     return res?.status === "success"; 
 };
 
+export const initiateAllPending = async (paymentId: string, data: any) => {
+    let res = await postDoc(`/payments/initiate/list/${paymentId}`, data);
+    return res?.status === "success";
+}
 // update payment
 export const updatePayment = async (paymentId: string, data: any) => {
     let res = await patchDoc(`/payments/${paymentId}`, data, true);

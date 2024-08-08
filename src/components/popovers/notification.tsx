@@ -4,21 +4,29 @@ import React from "react";
 import { CheckCheck, SlidersHorizontal } from "lucide-react";
 
 import AppLinkButton from "../common/app-link-button";
-import { Button } from "../ui/button";
 import { Paragraph } from "../ui/typography";
 import PopoverContainer from "./container";
  
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 const NotificationPopover = () => {
     const searchParams = useSearch(); 
-    
+    const { push } = useRouter(); 
+
     const unread = searchParams?.get("unread"); 
-    const oldest = searchParams?.get("oldest") || "0"; 
+    const oldest = searchParams?.get("old") || ""; 
+    const page = searchParams?.get("page") || ""; 
 
-    const handleUpdateQuery = (queryParam: string) => {
+    const handleUpdateQuery = (ky: string, queryParam: string) => {
+        let url = `/notifications`; 
+        let queryString = ""
+        if (page) queryString = `page=${page}`
 
+        url = url +`?${queryString}` + queryParam; 
+
+        push(url)
     }
 
     let cls = "text-xs lg:text-sm hover:text-main-color duration-700 cursor-pointer flex gap-1 items-center"
@@ -41,7 +49,7 @@ const NotificationPopover = () => {
                         unread ? "text-main-color": ""
                     )}
                     onClick={() => {
-                        handleUpdateQuery("unread=1")
+                        handleUpdateQuery("unread", "unread=1")
                     }}
                 >
                     <CheckCheck 
@@ -56,7 +64,7 @@ const NotificationPopover = () => {
                         oldest === "1" ? "text-main-color": ""
                     )}
                     onClick={() => {
-                        handleUpdateQuery("oldest=1")
+                        handleUpdateQuery("old", "old=1")
                     }}
                 >
                     <CheckCheck 
@@ -68,15 +76,15 @@ const NotificationPopover = () => {
                 <Paragraph
                     className={cn(
                         cls, 
-                        (oldest === "0" || !oldest) ? "text-main-color": ""
+                        (oldest === "0") ? "text-main-color": ""
                     )}
                     onClick={() => {
-                        handleUpdateQuery("oldest=0")
+                        handleUpdateQuery("old", "old=0")
                     }}
                 >
                     <CheckCheck 
                         size={18} 
-                        className={cn((oldest === "0" || !oldest) ? "text-main-color": "text-transparent")}
+                        className={cn((oldest === "0") ? "text-main-color": "text-transparent")}
                     />
                     Newest First
                 </Paragraph>
