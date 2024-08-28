@@ -52,10 +52,6 @@ const menu_items: LinkType[] = [
         href: "/pricing"
     },
     {
-        title: "Docs",
-        href: "/docs"
-    },
-    {
         title: "Support",
         href: "/support"
     }

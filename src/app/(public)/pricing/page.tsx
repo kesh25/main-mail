@@ -13,7 +13,7 @@ const Pricing = () => (
         <Plans />
         <Banner 
             text="Get a professional email for your brand or business at the cheapest rates."
-            subtitle="The cost for API calls are charged separately. Look at the docs for further instructions and costs"
+            // subtitle="The cost for API calls are charged separately. Look at the docs for further instructions and costs"
         />
     </>
 );

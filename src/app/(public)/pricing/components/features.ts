@@ -21,6 +21,7 @@ const basic: string[] = [
 const premium: string[] = [
     "Upto 15 Email Accounts",
     "70 GB Storage",
+     "API Access"
      
 ]; 
 

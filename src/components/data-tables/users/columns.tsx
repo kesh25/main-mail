@@ -39,7 +39,7 @@ export const columns: ColumnDef<UserTableType>[] = [
         cell: ({ row }) => {
             let roles: string[] = row.getValue("roles"); 
             return (
-                <div className="flex flex-wrap max-w-[250px]">
+                <div className="flex flex-wrap max-w-[250px] gap-1">
                     {
                         roles.map((role: string, index: number) => (
                             <span key={index} className="border px-3 rounded-full capitalize w-fit text-xs">{role}</span>
