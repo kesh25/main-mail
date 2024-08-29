@@ -28,6 +28,8 @@ const DomainStorage: React.FC<DomainStorageProps> =({
     const [mounted, setMounted] = React.useState<boolean>(false); 
     const [data, setData] = React.useState<DataType[]>([]); 
     const [total, setTotal] = React.useState<number>(0); 
+    const [added, setAdded] = React.useState<number>(0); 
+    const [used, setUsed] = React.useState<number>(0); 
     const [loading, setLoading] = React.useState<boolean>(false); 
 
     const chartConfig = {
@@ -55,6 +57,8 @@ const DomainStorage: React.FC<DomainStorageProps> =({
 
         if (res) {
             let {storage, addedStorage, used} = res; 
+            setAdded(addedStorage); 
+            setUsed(used); 
 
             let chartData: DataType[] = [
                 {
@@ -80,6 +84,7 @@ const DomainStorage: React.FC<DomainStorageProps> =({
     return (
         <Chart 
             labels={"Total Storage"}
+            subtitle={`Added storage: ${added} GB, Used: ${used} GB`}
             labelString={`${total} GB`}
             data={data}
             chartConfig={chartConfig}

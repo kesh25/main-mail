@@ -18,7 +18,9 @@ import StorageUserTable from "@/components/data-tables/storage-users";
 
 import {StorageUserTableType} from "@/types";
 import {useCustomEffect, useSearch} from "@/hooks";
-import { getBusinessFileDistribution, getBusinessUsersStorage } from "@/lib/api-calls/storage"
+import { getBusinessFileDistribution, getBusinessUsersStorage, upgradeBusinessStorage } from "@/lib/api-calls/storage"
+import { createToast } from "@/utils/toast";
+import { numberWithCommas } from "@/utils/format-numbers";
 
 type DataType = {
     type: string; 
@@ -109,7 +111,7 @@ const Storage = ({domain}: {domain: string}) => {
             </div>
             <div className="flex gap-2 flex-col lg:flex-row pb-5">
                 <StorageUsers domain={domain}/>
-                <StorageUpgrade />
+                <StorageUpgrade domain={domain}/>
             </div>
 
         </SettingsContainer>
@@ -165,8 +167,26 @@ const StorageUsers = ({domain}: {domain: string}) => {
     )
 }; 
 
-const StorageUpgrade = () => {
+const StorageUpgrade = ({domain}: {domain: string}) => {
     const [size, setSize] = React.useState<number>(0); 
+
+    const [loading, setLoading] = React.useState<boolean>(false); 
+
+    const handleUpgradeStorage = async () => {
+        if (!size) {
+            createToast("error", "Size cannot be 0"); 
+            return
+        };
+        setLoading(true); 
+
+        let res = await upgradeBusinessStorage(domain, {storage: size}); 
+
+        if (res) {
+            createToast("success", "Storage added, reloading..."); 
+            window.location.reload(); 
+        };
+        setLoading(false)
+    }
 
     return (
         <Card className="px-6 py-3 flex-1 h-fit">
@@ -179,10 +199,16 @@ const StorageUpgrade = () => {
                     setValue={setSize}
                     placeholder={40}
                     type="number"
+                    disabled={loading}
                 />
                 <span className="block text-sm lg:text-md">Amount to add per month</span>
-                <Paragraph>KES: 0.00</Paragraph>
-                <Button>Upgrade</Button>
+                <Paragraph>KES: {numberWithCommas(Math.ceil(size * 5))}</Paragraph>
+                <Button 
+                    onClick={handleUpgradeStorage}
+                    disabled={loading}
+                >
+                    Upgrad{loading ? "ing...": "e"}
+                </Button>
             </div>
         </Card>
     )
