@@ -33,6 +33,7 @@ const ChartContainer = ({ domainId }: { domainId: string }) => {
     let res = await getDomainGraphs(domainId, timeline);
     if (res) {
       setData(res);
+      console.log(res)
       let keys: string[] = ["sent", "received"];
       let config = generateChartConfig(keys);
       let lbls = keys.map(itm => {

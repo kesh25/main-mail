@@ -30,7 +30,7 @@ const ChartContainer = () => {
       let res = await getDashboardGraphs(timeline);
       if (res) {
         setData(res);
-        let domains: string[] = Object.keys(res[0]).filter(itm => itm !== "date");
+        let domains: string[] = Object.keys(res[0] || {})?.filter(itm => itm !== "date");
         let config = generateChartConfig(domains);
         let lbls = domains.map(itm => {
           let { strokeColor, fillColor } = generateRandomColor();

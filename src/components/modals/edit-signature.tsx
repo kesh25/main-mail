@@ -58,7 +58,7 @@ const EditSignatureModal: React.FC<EditSignatureModalProps> = (
                 textarea={true}
             />
             <div className="w-full flex justify-end">
-                <Button>Submit</Button>
+                <Button onClick={onClose}>Close to update</Button>
             </div>
         </Modal>
     )

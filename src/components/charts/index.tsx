@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import PieGraph from "./pie";
 import BarHorizontal from "./bar-horizontal";
 import BarGraph from "./bar"; 
+import LineGraph from "./line";
 
 interface ChartProps {
     type: "area" | "line" | "bar" | "pie" | "bar-horizontal",
@@ -24,13 +25,14 @@ interface ChartProps {
     xAxis?: any;
     yAxis?: any; 
     bars?: any;
+    lines?: any; 
 }
 
 
 const Chart: React.FC<ChartProps> = ({
     type, title, subtitle, headerComponent, height, 
     data, labels, labelString, chartConfig, className,
-    xAxis, yAxis, bars
+    xAxis, yAxis, bars, lines
 
 }) => {
     const [mounted, setMounted] = React.useState<boolean>(false); 
@@ -98,6 +100,17 @@ const Chart: React.FC<ChartProps> = ({
                 )
              }
             
+            {
+                type === "line" &&  lines && (
+                    <LineGraph 
+                        chartData={data}
+                        chartConfig={chartConfig}
+                        xAxis={xAxis}
+                        lines={lines}
+                        height={height}
+                    />
+                )
+            }
         </ChartActualContainer>
     )
 };

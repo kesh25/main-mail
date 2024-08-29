@@ -14,6 +14,9 @@ import { useCustomEffect, useSearch } from "@/hooks";
 import { generateKey, getApiKeys } from "@/lib/api-calls/keys";
 import { createToast} from "@/utils/toast"; 
 import { useApiKeyState } from "@/stores/api-keys";
+import Chart from "@/components/charts";
+import { ChartConfig } from "@/components/ui/chart";
+import APIKeyGraph from "./api-key-graph";
 
 type PlanType = "basic" | "premium" | "startup" | "custom" | undefined; 
 
@@ -101,7 +104,18 @@ const API = ({domain}: {domain: string}) => {
         }; 
         setKeys([]); 
         setKeys([...updated]); 
-    }, [deletedKeys])
+    }, [deletedKeys]);
+
+    const chartConfig = {
+        views: {
+          label: "Sent",
+        },
+        sent: {
+          label: "Sent",
+          color: "hsl(var(--chart-1))",
+        },
+        
+      } satisfies ChartConfig
 
     return (
         <SettingsContainer
@@ -122,6 +136,8 @@ const API = ({domain}: {domain: string}) => {
                 ): (
                     <>
                         <Paragraph className=""><span className="text-extrabold">NB:</span> Make certain that you protect your API Keys with your life. They are encrypted before they are stored in our database.</Paragraph>
+                        <Separator className="my-3"/>
+                        <APIKeyGraph />
                         <Separator className="my-3"/>
                         <div className="flex justify-end my-2">
                             <Button

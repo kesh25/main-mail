@@ -261,17 +261,18 @@ const LetterHead = (
 
 
     const handleUpdate = async () => {
-        if (!currentTitle || !currentAddress || !currentLogo || !currentSlogan) {
-            createToast("error", "Kindly fill in all details!");
+        if (!currentTitle && !currentAddress && !currentLogo && !currentSlogan) {
+            createToast("error", "Nothing to update!");
             return; 
-        }
+        };
 
-        await updatingDomain(domain, setLoading, {
-            title: currentTitle, 
-            address: currentAddress, 
-            logo: currentLogo, 
-            slogan: currentSlogan
-        }, () => setEdited(true))
+        let update: any = {}; 
+        if (currentTitle) update.title = currentTitle;
+        if (currentAddress) update.address = currentAddress; 
+        if (currentLogo) update.logo = currentLogo; 
+        if (currentSlogan) update.slogan = currentSlogan; 
+
+        await updatingDomain(domain, setLoading, update, () => setEdited(true))
     }
 
     return (
@@ -290,7 +291,7 @@ const LetterHead = (
             <Paragraph className="">Make each mail professional with customized letter signatures</Paragraph>
             <Separator className="my-3"/>
             
-            <Card className="w-full lg:max-w-[700px] p-2">
+            <Card className="w-full p-2">
                 <Heading3 className="text-sm lg:text-md text-center">Sample Mail</Heading3>
                 <Separator className="my-2"/>
                 <div className="w-full h-[15vh] p-2">
@@ -306,13 +307,11 @@ const LetterHead = (
                         <Skeleton className="w-full h-[10px] rounded-full"/>
                         <Skeleton className="w-full h-[10px] rounded-full"/>
                         <Skeleton className="w-full h-[10px] rounded-full"/>
-                        <Skeleton className="w-full h-[10px] rounded-full"/>
-                        <Skeleton className="w-full h-[10px] rounded-full"/>
-                        <Skeleton className="w-[50%] h-[10px] rounded-full"/>
+                         
                     </div>
                 </div>
                 <Separator className="my-2"/>
-                <div className={"flex gap-2 items-center h-[75px] py-2 "}>
+                <div className={"flex gap-2 items-center h-[80px] py-2 "}>
 
                     {
                         currentLogo ? (
