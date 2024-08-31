@@ -17,6 +17,7 @@ import { useApiKeyState } from "@/stores/api-keys";
 import Chart from "@/components/charts";
 import { ChartConfig } from "@/components/ui/chart";
 import APIKeyGraph from "./api-key-graph";
+import APIDocs from "@/components/sheets/api-docs";
 
 type PlanType = "basic" | "premium" | "startup" | "custom" | undefined; 
 
@@ -121,6 +122,9 @@ const API = ({domain}: {domain: string}) => {
         <SettingsContainer
             title="API"
             subtitle="Automate your transactional and marketing emails with a few lines of code."
+            headerComponent={
+                <APIDocs />
+            }
         >
             {
                 plan === "basic" ? (
