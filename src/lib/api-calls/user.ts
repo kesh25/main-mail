@@ -25,3 +25,9 @@ export const deleteUser = async (userId: string) => {
     let res = await deleteDoc(`/users/admin/${userId}`, true); 
     return res?.status === "success";
 }
+
+// get user
+export const getUser = async () => {
+    let res = await getDoc(`/users`, false); 
+    return res?.status === "success"; 
+}

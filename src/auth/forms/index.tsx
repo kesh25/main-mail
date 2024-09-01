@@ -10,7 +10,7 @@ import {useForm } from "react-hook-form";
 import {Button} from "@/components/ui/button"; 
 import { Form } from "@/components/ui/form";
 
-import {useSignIn} from '../authHooks';
+import {useAuthUser, useSignIn} from '../authHooks';
 
 import GenerateAuthPageForm from "./auth-components/generate-auth-form"; 
 // auth schemas
@@ -19,6 +19,9 @@ import { getSchema } from "./values";
 // functions 
 import { handleSubmit} from "./functions"
 import {cn} from "@/lib/utils"; 
+import { getUser } from '@/lib/api-calls/user';
+import { createToast } from '@/utils/toast';
+import { useCustomEffect } from '@/hooks';
 
 interface AuthProps {
     buttonText: string;   
@@ -34,9 +37,12 @@ const AuthForm: React.FC<AuthProps> = ({buttonText, screen, values, className, a
     const [loading, setLoading] = React.useState(screen === 'welcome' ? true: false); 
     const [activated, setActivated] = React.useState(false); 
     const [message, setMessage] = React.useState(""); 
+    const [mounted, setMounted] = React.useState<boolean>(false); 
 
     const {push, refresh} = useRouter(); 
     const signIn = useSignIn() 
+    const auth = useAuthUser(); 
+    const user = auth(); 
 
     const searchParams = useSearchParams(); 
     const token = searchParams.get("token") || "";
@@ -45,6 +51,24 @@ const AuthForm: React.FC<AuthProps> = ({buttonText, screen, values, className, a
     // React.useEffect(() => {
     //     if (token && screen === 'welcome' && !admin) handleActivation(token, setActivated, setMessage, setLoading, push)
     // }, [token]); 
+
+    React.useEffect(() => setMounted(true), []); 
+
+    const confirmUserIfLoggedIn = async () => {
+        if (screen !== "login" || !user || !mounted) return; 
+        setLoading(true); 
+
+        let res = await getUser(); 
+
+        if (res) {
+            createToast("success", "Welcome back."); 
+            push("/dashboard")
+        };
+
+        setLoading(false); 
+    }
+
+    useCustomEffect(confirmUserIfLoggedIn, [user, mounted]); 
 
     let schema = getSchema(screen)
    

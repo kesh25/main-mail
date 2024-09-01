@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card"; 
 import { Heading1 } from "@/components/ui/typography"; 
 
-const Auth = ({params}: {params: {type: string}}) => {
+const Auth = ({params}: {params: {type: ScreenType}}) => {
     const {back} = useRouter(); 
 
     return (
         <>
             <main className="w-[100vw] h-[100vh] flex flex-col items-center justify-center px-2">
-                <Logo />
+                <Logo showText={false}/>
                 <Card className="w-full lg:max-w-[450px] flex flex-col gap-2 my-2 p-2 px-3">
                     <div  className="relative w-full flex items-center justify-center py-2">
                         <Button variant="ghost" onClick={() => back()} className="absolute left-0 top-0 mt-1">
@@ -44,6 +44,7 @@ const Auth = ({params}: {params: {type: string}}) => {
 
 export default Auth; 
 
+type ScreenType = "login" | "register" | "forgot" | "reset" | "welcome"; 
 
 let generateValues = (screen: ScreenType) => {
     let values: any; 
