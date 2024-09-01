@@ -34,7 +34,7 @@ const ShowAPI = ({api_key}: {api_key: APIKeyTableType}) => {
         <span className="flex items-center gap-4 text-xs overflow-auto">
             <span className="flex flex-col max-w-[90%] overflow-auto">
                 <span className="font-bold">{show ? "Decrypted": "Encrypted"}</span>
-                <span>{rawKey.slice(0, 30)}***</span>
+                <span>{rawKey.slice(0, 15)}***</span>
             </span>
             <span className="flex gap-2 items-center">
                 <AppLinkButton
