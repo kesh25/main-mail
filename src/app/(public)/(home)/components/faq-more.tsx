@@ -28,7 +28,7 @@ const FAQMORE = () => (
             <Heading3 className="text-lg lg:text-xl uppercase font-extrabold text-center">Do You Still Have Some <br /> Questions?</Heading3>
              
             <Button className="flex gap-2 items-center">
-                Let's Talk
+                Let&apos;s Talk
                 <ArrowRight size={18}/>
             </Button>
         </HeroHighlight>

@@ -45,7 +45,7 @@ const Info: React.FC<InfoProps> = ({ children, localStorageString}) => {
                         {children}
                         <div className="flex my-2">
                             <Button onClick={() => handleHideInfo(true)}>
-                                Don't show again
+                                Don&apos;t show again
                             </Button>
                         </div>
                     </Card>

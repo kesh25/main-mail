@@ -1,4 +1,5 @@
-import { DomainTableType, columns } from "./columns"
+import { DomainTableType } from "@/types";
+import { columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"; 
 
  

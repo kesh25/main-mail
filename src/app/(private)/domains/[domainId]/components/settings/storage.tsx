@@ -151,7 +151,7 @@ const StorageUsers = ({domain}: {domain: string}) => {
 
     return (
         <Card className="px-6 py-3 lg:min-w-[60%]">
-            <Heading2 className="text-md lg:text-base">User's storage</Heading2>
+            <Heading2 className="text-md lg:text-base">User&apos;s storage</Heading2>
             <Paragraph className="text-sm lg:text-md text-gray-500">Storage for the domain users</Paragraph>
             <Separator className="my-3"/>
             {

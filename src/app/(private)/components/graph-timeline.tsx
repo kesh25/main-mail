@@ -5,6 +5,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select";
+import { TimelineType } from "@/lib/api-calls/domains";
 
 
 const Selection = (

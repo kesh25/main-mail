@@ -16,11 +16,14 @@ const Testimonials = () => (
             items={testimonials.slice(0, 10)}
             direction="right"
             speed="slow"
+            type="testimonials"
         />
         <InfiniteMovingCards
             items={testimonials.slice(11, )}
             direction="left"
             speed="slow"
+            type="testimonials"
+
         />
     </SectionContainer>
 );

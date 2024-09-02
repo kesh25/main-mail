@@ -59,7 +59,7 @@ const BarHorizontal = (
             />
                     {/* <Bar dataKey="desktop" fill="var(--color-desktop)" radius={5} key={index}/> */}
             {
-                bars.map((bar, index) => (
+                bars.map((bar: any, index) => (
                     <Bar dataKey={bar.dataKey} fill={bar.fill} radius={2} key={index}/>
 
                 ))

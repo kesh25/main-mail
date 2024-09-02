@@ -91,10 +91,6 @@ const Info = ({domainId}:{domainId: string}) => {
                         </div>
                         {/* <Card className="lg:w-[50%] h-[20vh] p-6 "> */}
                         <DomainStorage 
-                            data={[
-                                {title: "Used", storage: 40, fill: "#E76F4F" },
-                                {title: "Free", storage: 10, fill: "#2B9C90" }
-                            ]}
                             domain={domainId}
                             title={domain.domain}
                         />

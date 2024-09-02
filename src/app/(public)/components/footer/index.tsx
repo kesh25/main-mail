@@ -14,7 +14,7 @@ const Footer = () => (
 
         <footer className="flex flex-col lg:flex-row justify-between">
             <div className="flex flex-col gap-2">
-                <Logo />
+                <Logo showText={false}/>
                 <Paragraph className="flex items-center gap-1">
                     <span>Copyright {new Date().getFullYear()}.</span>
                     <Copyright size={15}/>

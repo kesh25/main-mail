@@ -87,17 +87,18 @@ const AreaGraph = ({
           }
         />
         {
-          labels.map(label => (
-            <>
+          labels.map((label: any, index: number) => (
+             
               <Area
                 dataKey={label.dataKey}
                 type="natural"
                 fill={label.fill}
                 stroke={label.stroke}
                 stackId="a"
+                key={index}
               />
 
-            </>
+             
           ))
         }
         {/* <Area

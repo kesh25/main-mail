@@ -1,4 +1,5 @@
-import { PaymentTableType, columns } from "./columns"
+import { PaymentTableType } from "@/types";
+import { columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"; 
 
 const PaymentTable = ({data}: {data: PaymentTableType[]}) => {

@@ -14,7 +14,7 @@ interface SectionContainerProps {
 }; 
 
 const SectionContainer: React.FC<SectionContainerProps> = ({
-    title, titleClassName, subtitle, subtitleClassName, className, fullWidth, children
+    title, titleClassName, subtitle, subtitleClassName, className, children
 }) => {
 
 

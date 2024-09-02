@@ -47,7 +47,7 @@ const BarGraph = (
               content={<ChartTooltipContent hideLabel />}
             />
             {
-                bars.map((bar, index) => (
+                bars.map((bar: any, index) => (
                     <Bar dataKey={bar.dataKey} fill={bar.fill} radius={2} key={index}/>
 
                 ))

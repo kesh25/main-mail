@@ -2,7 +2,6 @@
 "use client"; 
 import React from "react"; 
 
-import {UserTableType} from "../data-tables/users/columns"; 
 import AppInput from "../common/app-input"; 
 import {Button} from "../ui/button"; 
 import {Modal} from "./modal";
@@ -11,6 +10,7 @@ import { createToast } from "@/utils/toast";
 import { createUser } from "@/lib/api-calls/user";
 import { validateEmail } from "@/utils/validation";
 import { useSearch } from "@/hooks";
+import { UserTableType } from "@/types";
 
 interface AddUserModalProps {
     setUsers: React.Dispatch<UserTableType[]>;
@@ -59,7 +59,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
 
         if (res) {
             let user: UserTableType = {
-                id: res, avatar, name, phone, email, sent: 0, received: 0, storage: 0, createdAt: new Date(), suspended: false
+                id: res, avatar, name, phone, email, sent: 0, received: 0, storage: 0, createdAt: new Date(), suspended: false, roles: ["user"]
             }; 
 
             setUsers([user, ...users]); 

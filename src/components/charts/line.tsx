@@ -65,7 +65,7 @@ const LineGraph = (
               }
             />
             {
-                lines.map((line, index) => (
+                lines.map((line: any, index) => (
                     <Line
                         dataKey={line.dataKey}
                         type="monotone"

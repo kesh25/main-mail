@@ -18,7 +18,7 @@ import { resetPassword, deleteUser, updateUser } from "@/lib/api-calls/user";
 import { createToast } from "@/utils/toast";
 import {userState } from "@/stores/user";
 import {useSearch } from "@/hooks";
-import { validateEmail } from "@/utils/validation";
+import { validateEmail, validatePhone } from "@/utils/validation";
 
 
 const UserCellActions = ({ user }: { user: UserTableType }) => {
@@ -264,7 +264,7 @@ const RolesModal: React.FC<RolesModalProps> = ({
         }
 
         if (phone !== user.phone) {
-            if (!validatePhone) {
+            if (!validatePhone(phone)) {
                 createToast("error", "Invalid phone number!"); 
                 return; 
             }

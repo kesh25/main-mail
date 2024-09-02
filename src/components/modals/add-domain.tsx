@@ -9,7 +9,6 @@ import { ChevronLeft } from "lucide-react";
 import AppInput from "../common/app-input"; 
 import {Button} from "../ui/button"; 
 import { Card } from "../ui/card";
-import {DomainTableType} from "../data-tables/domains/columns"; 
 import FormTitle from "../forms/components/form-title";
 import { Heading3, Paragraph } from "../ui/typography";
 import {Modal} from "./modal";
@@ -18,6 +17,7 @@ import { numberWithCommas } from "@/utils/format-numbers";
 import { cn } from "@/lib/utils";
 import { createToast } from "@/utils/toast"; 
 import {createDomain} from "@/lib/api-calls/domains"; 
+import { DomainTableType } from "@/types";
 
 interface AddDomainModalProps {
     setDomains: React.Dispatch<DomainTableType[]>;

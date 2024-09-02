@@ -46,10 +46,10 @@ export function DataTable<TData, TValue>({
 
   React.useEffect(() => {
     if (!setSelected) return; 
-    let selectedRows = table.getFilteredSelectedRowModel().rows; 
+    let selectedRows: any = table.getFilteredSelectedRowModel().rows; 
 
     if (selectedRows.length > 0) {
-      selectedRows = selectedRows.map(row => (
+      selectedRows = selectedRows.map((row: any) => (
         row.original
       ));
 

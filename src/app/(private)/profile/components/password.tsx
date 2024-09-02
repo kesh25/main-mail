@@ -2,7 +2,7 @@
 "use client"; 
 import React from "react";
 import { Card } from "@/components/ui/card"
-import { AppInput } from "@/components";
+ 
 import { Button } from "@/components/ui/button";
 import { Heading2 } from "@/components/ui/typography";
 import { PasswordInput } from "@/auth/forms/auth-components/Password";

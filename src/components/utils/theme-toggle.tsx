@@ -7,7 +7,7 @@ import { Moon, Sun, SunMedium } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function ThemeToggle({className, size, variant}: {className?: string, size?: string, variant?: any}) {
+export default function ThemeToggle({className, size, variant}: {className?: string, size?: any, variant?: any}) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = React.useState(false)
 

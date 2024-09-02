@@ -1,5 +1,6 @@
 import { TestimonialType } from "./testimonials"; 
 import {FileType} from "./file-type"; 
+import { FormType } from "./form-type";
 
 import {
     PaymentTableType,
@@ -22,5 +23,6 @@ export type {
     GroupTableType,
     GroupUsersTableType,
     DomainTableType, 
-    APIKeyTableType
+    APIKeyTableType,
+    FormType
 }
