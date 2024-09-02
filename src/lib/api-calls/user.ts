@@ -28,6 +28,6 @@ export const deleteUser = async (userId: string) => {
 
 // get user
 export const getUser = async () => {
-    let res = await getDoc(`/users`, false); 
+    let res = await getDoc(`/users?type=panel`, true); 
     return res?.status === "success"; 
 }
