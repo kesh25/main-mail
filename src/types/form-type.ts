@@ -4,5 +4,7 @@ export type FormType = {
     editor?: boolean, 
     file?: boolean,
     placeholder?: string | number,
+    type?: string; 
+    subtitle?: string; 
     labelInstructions?: string, 
 };
