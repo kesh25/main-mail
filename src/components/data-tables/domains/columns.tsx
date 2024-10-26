@@ -20,7 +20,7 @@ export const columns: ColumnDef<DomainTableType>[] = [
         accessorKey: "sending_domain",
         header: "Sending subdomain",
         cell: ({ row }) => (
-            <span className="text-sm block max-w-[100px]">{row.getValue("sending_domain") || `mail.${row.getValue("domain")}`}</span>
+            <span className="text-sm block max-w-[100px] overflow-hidden">{row.getValue("sending_domain") || `mail.${row.getValue("domain")}`}</span>
         )
     },
     {
