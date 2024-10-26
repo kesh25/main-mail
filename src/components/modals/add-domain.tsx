@@ -54,7 +54,7 @@ const AddDomainModal: React.FC<AddDomainModalProps> = ({
 
         // validate sending domain 
         let sendingArr = sendingDomain.split("."); 
-        let sending_domain_check = sendingArr.length > 1 ? `${sendingArr[1]}.${sendingArr[2]}`: null; 
+        let sending_domain_check = sendingArr.length > 1 ? `${sendingArr[1]}.${sendingArr[2]}${sendingArr.length > 2 ? `.${sendingArr[3]}`: ""}`: null; 
 
         if (!sending_domain_check) {
             createToast("error", "Invalid sending domain.");

@@ -330,7 +330,7 @@ const LetterHead = (
                     }
                     <div className="flex flex-col justify-between">
                         <Heading3 className="text-sm lg:text-md">Person&apos;s Name</Heading3>
-                        <Paragraph className="text-xs lg:text-xs">{currentTitle || "Company"} | Position</Paragraph>
+                        <Paragraph className="text-xs lg:text-sm font-bold">{currentTitle || "Company"} | Position</Paragraph>
                         <Paragraph className="text-xs lg:text-xs">{currentSlogan || "Slogan"}</Paragraph>
                         <Paragraph className="text-xs lg:text-xs">{currentAddress || "Address"}</Paragraph>
                     </div>
