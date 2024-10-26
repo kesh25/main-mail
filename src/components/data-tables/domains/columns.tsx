@@ -13,14 +13,14 @@ export const columns: ColumnDef<DomainTableType>[] = [
         accessorKey: "domain",
         header: "Domain",
         cell: ({ row }) => (
-            <span className="text-sm block max-w-[100px] overflow-hidden">www.{row.getValue("domain")}</span>
+            <span className="text-sm block max-w-[100px] overflow-auto">www.{row.getValue("domain")}</span>
         )
     },
     {
         accessorKey: "sending_domain",
         header: "Sending subdomain",
         cell: ({ row }) => (
-            <span className="text-sm block max-w-[100px] overflow-hidden">{row.getValue("sending_domain") || `mail.${row.getValue("domain")}`}</span>
+            <span className="text-sm block max-w-[100px] overflow-auto">{row.getValue("sending_domain") || `mail.${row.getValue("domain")}`}</span>
         )
     },
     {
