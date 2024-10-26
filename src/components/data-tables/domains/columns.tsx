@@ -13,7 +13,7 @@ export const columns: ColumnDef<DomainTableType>[] = [
         accessorKey: "domain",
         header: "Domain",
         cell: ({ row }) => (
-            <span className="text-sm block max-w-[100px]">www.{row.getValue("domain")}</span>
+            <span className="text-sm block max-w-[100px] overflow-hidden">www.{row.getValue("domain")}</span>
         )
     },
     {
